@@ -9,8 +9,7 @@ create table person(
     birth blob,
     gender enum('male','female','undefined'),
     biography blob,
-    death blob,
-    repressed bool -- political
+    death blob
 );
 
 --
@@ -208,7 +207,7 @@ DELIMITER //
 create trigger case_info_crypt before insert on case_info
 for each row
 begin
-	set new.info_content = aes_encrypt(new.info_content, "compromat")
+	set new.info_content = aes_encrypt(new.info_content, "content")
     ;
     if new.info_description  regexp "^\\w+$" then
 		set new.info_description = aes_encrypt(new.info_description, "info_description");
@@ -224,7 +223,7 @@ DELIMITER //
 create trigger case_info_update_crypt before update on case_info
 for each row
 begin
-	set new.info_content = aes_encrypt(new.info_content, "compromat")
+	set new.info_content = aes_encrypt(new.info_content, "content")
     ;
     if new.info_description  regexp "^\\w+$" then
 		set new.info_description = aes_encrypt(new.info_description, "info_description");
@@ -565,7 +564,7 @@ DELIMITER //
 create trigger spy_ep_info_crypt before insert on spy_ep_info
 for each row
 begin
-	set new.info_content = aes_encrypt(new.info_content, "compromat")
+	set new.info_content = aes_encrypt(new.info_content, "content")
     ;
     if new.info_description  regexp "^\\w+$" then
 		set new.info_description = aes_encrypt(new.info_description, "info_description");
@@ -581,7 +580,7 @@ DELIMITER //
 create trigger spy_ep_info_update_crypt before update on spy_ep_info
 for each row
 begin
-	set new.info_content = aes_encrypt(new.info_content, "compromat")
+	set new.info_content = aes_encrypt(new.info_content, "content")
     ;
     if new.info_description  regexp "^\\w+$" then
 		set new.info_description = aes_encrypt(new.info_description, "info_description");
