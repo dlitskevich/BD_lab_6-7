@@ -39,5 +39,7 @@ CREATE TABLE criminal_relative
 (
 	criminal_id INT,
     relative_id INT,
-    relation2criminal ENUM('spouse', 'sibling', 'parent', 'child', 'distant')
+    relation2criminal ENUM('spouse', 'sibling', 'parent', 'child', 'distant'),
+    CONSTRAINT fk_relative_person FOREIGN KEY (relative_id) REFERENCES person (person_id),
+    CONSTRAINT fk_criminal_person FOREIGN KEY (criminal_id) REFERENCES person (person_id)
 );
