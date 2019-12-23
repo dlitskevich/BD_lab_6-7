@@ -7,3 +7,6 @@ update person
 	set person_name = "john"
 where person_id = 1
 ;
+
+insert into compromat
+()

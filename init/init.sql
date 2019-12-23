@@ -110,12 +110,22 @@ END;;
 CREATE TRIGGER person_check_upd BEFORE UPDATE ON person
 FOR EACH ROW 
 BEGIN
+	declare was_shot bool;
+    set was_shot = 0;
+    
+	select count(*) into was_shot from cases
+    where person_id=new.person_id and  sentence=-1;
+    
+    if was_shot > 0 and death!=new.death then
+		signal sqlstate '45001'
+        set message_text = 'bad death date: He definetly was shot (trigger)';
+    end if;
+    
 	IF NEW.birth >= NEW.death THEN
 		SIGNAL SQLSTATE '45000'
 			SET MESSAGE_TEXT = 'An error occurred: check birth and death dates.';
 	END IF; 
 END;;
-
 DELIMITER ;
 
 insert into person
@@ -145,7 +155,7 @@ CREATE TABLE cases
     article_id INT,
     start_date DATE,
     end_date DATE,
-    authoruty VARCHAR(45),
+    authority VARCHAR(45),
     sentence_id INT,
     times INT,
     CONSTRAINT fk_cases_person FOREIGN KEY (person_id) REFERENCES person (person_id),
@@ -158,8 +168,6 @@ CREATE TRIGGER cases_check BEFORE INSERT ON cases
 FOR EACH ROW
 BEGIN
 	DECLARE prev_times INT DEFAULT 0;
-    DECLARE new_case INT;
-    SET new_case = NEW.case_id;
     
 	IF NEW.start_date < NEW.end_date THEN
 		SIGNAL SQLSTATE '45000'
@@ -168,23 +176,74 @@ BEGIN
     
     SELECT times INTO prev_times
     FROM cases
-    WHERE case_id = new_case
+    WHERE case_id = NEW.case_id
     ORDER BY start_date DESC
     LIMIT 1;
     
     SET NEW.times = prev_times + 1;
     
 END;;
+
+CREATE TRIGGER cases_update BEFORE update ON cases
+FOR EACH ROW
+BEGIN
+	IF NEW.start_date < NEW.end_date THEN
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'An error occurred: incorrect time period, check dates.';
+	END IF;
+    
+    SET NEW.times = times;
+END;;
 DELIMITER ;
 
-CREATE TABLE case_info
-(
+CREATE TABLE case_info(
 	info_id INT PRIMARY KEY AUTO_INCREMENT,
     info_description BLOB,
     case_id INT,
     info_content BLOB,
     CONSTRAINT fk_info_cases FOREIGN KEY (case_id) REFERENCES cases (case_id)
 );
+
+DELIMITER //
+create trigger case_info_crypt before insert on case_info
+for each row
+begin
+	set new.info_content = aes_encrypt(new.info_content, "compromat")
+    ;
+    if new.info_description  regexp "^\\w+$" then
+		set new.info_description = aes_encrypt(new.info_description, "info_description");
+	elseif not cast(aes_decrypt(new.info_description, 'info_description') as char) regexp "^\\w+$" then
+		signal sqlstate '45000'
+		SET MESSAGE_TEXT = "Bad info description (trigger)...";
+	end if
+    ;
+end //
+DELIMITER ;
+
+DELIMITER //
+create trigger case_info_update_crypt before update on case_info
+for each row
+begin
+	set new.info_content = aes_encrypt(new.info_content, "compromat")
+    ;
+    if new.info_description  regexp "^\\w+$" then
+		set new.info_description = aes_encrypt(new.info_description, "info_description");
+	elseif not cast(aes_decrypt(new.info_description, 'info_description') as char) regexp "^\\w+$" then
+		signal sqlstate '45000'
+		SET MESSAGE_TEXT = "Bad info description (trigger)...";
+	end if
+    ;
+end //
+DELIMITER ;
+
+DELIMITER //
+create trigger case_update before update on case_info
+for each row
+begin
+	signal sqlstate '45000'
+	SET MESSAGE_TEXT = "No update on case information is allowed (trigger)...";
+end //
+DELIMITER ;
 
 --
 create table party(
@@ -235,7 +294,7 @@ create table transfer(
     transfer_action ENUM('arrival', 'transfer', 'release'),
 	transfer_date date,
     case_id int not null,
-    placeD_prev int,
+    placeD_prev int default null,
     placeD_current int not null,
 	constraint fk_transfer_cases foreign key (case_id) references cases(case_id),
     constraint fk_transfer_placeD_prev foreign key (placeD_prev) references placeD(placeD_id),
@@ -291,8 +350,7 @@ DELIMITER ;
 -- 2-nd part
 
 
-CREATE TABLE rehabilitation
-(
+CREATE TABLE rehabilitation(
 	rehabilitation_id INT PRIMARY KEY AUTO_INCREMENT,
     rehabilitation_date DATE,
     rehabilitation_authority VARCHAR(45),
@@ -332,8 +390,7 @@ BEGIN
 END;;
 DELIMITER ;
 
-CREATE TABLE shot
-(
+CREATE TABLE shot(
 	shot_id INT PRIMARY KEY AUTO_INCREMENT,
     case_id INT,
     shot_date DATE,
@@ -400,8 +457,7 @@ BEGIN
 END;;
 DELIMITER ;
 
-CREATE TABLE afterlife
-(
+CREATE TABLE afterlife(
 	afterlife_id INT PRIMARY KEY AUTO_INCREMENT,
     person_id INT,
     case_id INT,
@@ -441,7 +497,37 @@ BEGIN
     
     IF new_person <> person_case AND (SELECT COUNT(criminal_id)
 									  FROM criminal_reative
-                                      WHERE criminal_id = new_case AND relative_id = new_person) <> 1
+                                      WHERE criminal_id = case_person AND relative_id = new_person) <> 1
+		THEN
+			SIGNAL SQLSTATE '45000'
+			SET MESSAGE_TEXT = 'An error occurred: person and criminal are not relatives.';
+	END IF;    
+END;;
+
+CREATE TRIGGER afterlife_update BEFORE update ON afterlife
+FOR EACH ROW
+BEGIN
+	DECLARE prev_times INT DEFAULT 0;
+    DECLARE case_end DATE;
+    DECLARE person_death DATE;
+    DECLARE case_person INT;
+
+    SELECT end_date, person_id INTO case_end, case_person
+    FROM cases
+    WHERE case_id = NEW.case_id;
+    
+    SELECT death INTO person_death
+    FROM person
+    WHERE person_id = NEW.person_id;
+    
+	IF NOT NEW.afterlife_start_date BETWEEN case_end AND person_death THEN
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'An error occurred: incorrect start_date.';
+	END IF;
+    
+    IF new_person <> person_case AND (SELECT COUNT(criminal_id)
+									  FROM criminal_reative
+                                      WHERE criminal_id = NEW.case_id AND relative_id = NEW.person_id) <> 1
 		THEN
 			SIGNAL SQLSTATE '45000'
 			SET MESSAGE_TEXT = 'An error occurred: person and criminal are not relatives.';
@@ -450,27 +536,24 @@ END;;
 DELIMITER ;
 
 -- 3-rd 
-CREATE TABLE spyorg
-(
+CREATE TABLE spyorg(
 	spyorg_id INT PRIMARY KEY AUTO_INCREMENT,
     spyorg_name VARCHAR(45),
     country VARCHAR(45)
 );
 
-CREATE TABLE person_spyorg
-(
+CREATE TABLE person_spyorg(
 	episode_id INT PRIMARY KEY AUTO_INCREMENT,
     person_id INT,
     spyorg_id INT,
     episode_date DATE,
-    episode_action TEXT,
+    -- episode_action TEXT,
     standing ENUM('spotted', 'suspected'),
     CONSTRAINT fk_episode_person FOREIGN KEY (person_id) REFERENCES person (person_id),
     CONSTRAINT fk_episode_spyorg FOREIGN KEY (spyorg_id) REFERENCES spyorg (spyorg_id)
 );
 
-CREATE TABLE spy_ep_info
-(
+CREATE TABLE spy_ep_info(
 	info_id INT PRIMARY KEY AUTO_INCREMENT,
     info_description BLOB,
     info_content BLOB,
@@ -478,25 +561,110 @@ CREATE TABLE spy_ep_info
     CONSTRAINT fk_info_episode FOREIGN KEY (spy_ep_id) REFERENCES person_spyorg (episode_id)
 );
 
-CREATE TABLE compromat
-(
+DELIMITER //
+create trigger spy_ep_info_crypt before insert on spy_ep_info
+for each row
+begin
+	set new.info_content = aes_encrypt(new.info_content, "compromat")
+    ;
+    if new.info_description  regexp "^\\w+$" then
+		set new.info_description = aes_encrypt(new.info_description, "info_description");
+	elseif not cast(aes_decrypt(new.info_description, 'info_description') as char) regexp "^\\w+$" then
+		signal sqlstate '45000'
+		SET MESSAGE_TEXT = "Bad info description (trigger)...";
+	end if
+    ;
+end //
+DELIMITER ;
+
+DELIMITER //
+create trigger spy_ep_info_update_crypt before update on spy_ep_info
+for each row
+begin
+	set new.info_content = aes_encrypt(new.info_content, "compromat")
+    ;
+    if new.info_description  regexp "^\\w+$" then
+		set new.info_description = aes_encrypt(new.info_description, "info_description");
+	elseif not cast(aes_decrypt(new.info_description, 'info_description') as char) regexp "^\\w+$" then
+		signal sqlstate '45000'
+		SET MESSAGE_TEXT = "Bad info description (trigger)...";
+	end if
+    ;
+end //
+DELIMITER ;
+
+DELIMITER //
+create trigger spy_ep_info_update before update on spy_ep_info
+for each row
+begin
+	signal sqlstate '45000'
+	SET MESSAGE_TEXT = "No update on spy information is allowed (trigger)...";
+end //
+DELIMITER ;
+
+
+CREATE TABLE compromat(
 	compromat_id INT PRIMARY KEY AUTO_INCREMENT,
     person_id INT,
-    importance DOUBLE,
-    compromat_content BLOB,
+    importance DOUBLE default null,
+    compromat_description blob,
+    compromat_content BLOB not null,
     CONSTRAINT fk_compromat_person FOREIGN KEY (person_id) REFERENCES person (person_id)
 );
+
+DELIMITER //
+create trigger compromat_crypt before insert on compromat
+for each row
+begin
+	set new.compromat_content = aes_encrypt(new.compromat_content, "compromat")
+    ;
+    if new.compromat_description  regexp "^\\w+$" then
+		set new.compromat_description = aes_encrypt(new.compromat_description, "compromat_description");
+	elseif not cast(aes_decrypt(new.compromat_description, 'compromat_description') as char) regexp "^\\w+$" then
+		signal sqlstate '45000'
+		SET MESSAGE_TEXT = "Bad compromat description (trigger)...";
+	end if
+    ;
+end //
+DELIMITER ;
+
+DELIMITER //
+create trigger compromat_update_crypt before update on compromat
+for each row
+begin
+	set new.compromat_content = aes_encrypt(new.compromat_content, "compromat")
+    ;
+    if new.compromat_description  regexp "^\\w+$" then
+		set new.compromat_description = aes_encrypt(new.compromat_description, "compromat_description");
+	elseif not cast(aes_decrypt(new.compromat_description, 'compromat_description') as char) regexp "^\\w+$" then
+		signal sqlstate '45000'
+		SET MESSAGE_TEXT = "Bad compromat description (trigger)...";
+	end if
+    ;
+end //
+DELIMITER ;
 
 DELIMITER ;;
 CREATE TRIGGER compromat_importance_eval BEFORE INSERT ON compromat
 FOR EACH ROW
 BEGIN
-	SET NEW.importance = RAND(); # function to evaluate importance
+	if NEW.importance is null then
+		SET NEW.importance = compromat_importance(); # function to evaluate importance
+	end if;
 END;;
+
+DELIMITER ;
+DELIMITER //
+CREATE TRIGGER compromat_update before update on compromat
+FOR EACH ROW
+BEGIN
+	signal sqlstate '45001'
+    set message_text = 'No update on compromat is allowed'
+    ;
+END//
 DELIMITER ;
 
-CREATE TABLE criminal_relative
-(
+CREATE TABLE criminal_relative(
 	criminal_id INT,
     relative_id INT,
     relation2criminal ENUM('spouse', 'sibling', 'parent', 'child', 'distant'),
@@ -512,5 +680,12 @@ BEGIN
 		SIGNAL SQLSTATE '45000'
 		SET MESSAGE_TEXT = 'An error occurred: relative and criminal are the same person.';
 	END IF; 
+END;;
+
+CREATE TRIGGER criminal_relative_update BEFORE update ON criminal_relative
+FOR EACH ROW
+BEGIN
+	SIGNAL SQLSTATE '45000'
+	SET MESSAGE_TEXT = 'No update is allowed';
 END;;
 DELIMITER ;
