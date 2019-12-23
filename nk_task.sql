@@ -1,4 +1,5 @@
 use ALLIDB;
+drop database ALLIDB;
 
 select person_id, cast(aes_decrypt(person_name, 'name') as char) from person;
 

@@ -67,6 +67,8 @@ CREATE TABLE afterlife
     CONSTRAINT fk_afterlife_cases FOREIGN KEY (case_id) REFERENCES cases (case_id),
     CONSTRAINT fk_afterlife_person FOREIGN KEY (person_id) REFERENCES person (person_id)
 );
+--
+
 
 DELIMITER ;;
 
