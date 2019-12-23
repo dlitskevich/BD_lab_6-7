@@ -69,9 +69,13 @@ CREATE TABLE afterlife
 );
 --
 
-
 DELIMITER ;;
 
+<<<<<<< HEAD
+DELIMITER ;;
+
+=======
+>>>>>>> 3bc9ac505b460cc7d9f162c5d459a855375729dd
 # SHOT TRIGGERS
 DROP TRIGGER multiple_shot;;
 CREATE TRIGGER multiple_shot BEFORE INSERT ON shot
