@@ -16,6 +16,37 @@ create table person(
 );
 
 --
+DELIMITER ;;
+CREATE TRIGGER person_check_ins BEFORE INSERT ON person
+FOR EACH ROW 
+BEGIN
+	IF NEW.birth >= NEW.death THEN
+		SIGNAL SQLSTATE '45000'
+			SET MESSAGE_TEXT = 'An error occurred: check birth and death dates.';
+	END IF; 
+END;;
+
+CREATE TRIGGER person_check_upd BEFORE UPDATE ON person
+FOR EACH ROW 
+BEGIN
+	declare was_shot bool;
+    set was_shot = 0;
+    
+	select count(*) into was_shot from cases
+    where person_id=new.person_id and  sentence=-1;
+    
+    if was_shot > 0 and death!=new.death then
+		signal sqlstate '45001'
+        set message_text = 'bad death date: He definetly was shot (trigger)';
+    end if;
+    
+	IF NEW.birth >= NEW.death THEN
+		SIGNAL SQLSTATE '45000'
+			SET MESSAGE_TEXT = 'An error occurred: check birth and death dates.';
+	END IF; 
+END;;
+DELIMITER ;
+
 DELIMITER //
 create trigger person_crypt before insert on person
 for each row
@@ -103,49 +134,15 @@ begin
 	end if
     ;
 end //
-
-DELIMITER ;;
-CREATE TRIGGER person_check_ins BEFORE INSERT ON person
-FOR EACH ROW 
-BEGIN
-	IF NEW.birth >= NEW.death THEN
-		SIGNAL SQLSTATE '45000'
-			SET MESSAGE_TEXT = 'An error occurred: check birth and death dates.';
-	END IF; 
-END;;
-
-CREATE TRIGGER person_check_upd BEFORE UPDATE ON person
-FOR EACH ROW 
-BEGIN
-	declare was_shot bool;
-    set was_shot = 0;
-    
-	select count(*) into was_shot from cases
-    where person_id=new.person_id and  sentence=-1;
-    
-    if was_shot > 0 and death!=new.death then
-		signal sqlstate '45001'
-        set message_text = 'bad death date: He definetly was shot (trigger)';
-    end if;
-    
-	IF NEW.birth >= NEW.death THEN
-		SIGNAL SQLSTATE '45000'
-			SET MESSAGE_TEXT = 'An error occurred: check birth and death dates.';
-	END IF; 
-END;;
 DELIMITER ;
 
-insert into person
-	(person_name,person_surname,address,birth,gender,biography,death)
-values
-	('John',"Smith",'32 avenue', '1994-03-12','male','bio', null)
-;
+
 --
 CREATE TABLE article
 (
 	article_id INT PRIMARY KEY AUTO_INCREMENT,
     article_number VARCHAR(45) not null,
-    article_name VARCHAR(45) not null,
+    article_name text not null,
     article_text TEXT not null
 );
 
