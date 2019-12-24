@@ -1,6 +1,9 @@
 create database ALLIDB;
 use ALLIDB;
 
+SET SQL_SAFE_UPDATES = 0;
+SET global log_bin_trust_function_creators = 1;
+
 create table person(
 	person_id int primary key auto_increment,
     person_name blob,
@@ -59,6 +62,11 @@ DELIMITER //
 create trigger person_update_crypt before update on person
 for each row
 begin
+	if new.person_id != person_id then
+		signal sqlstate '45000'
+		SET MESSAGE_TEXT = "Bad id update is not allowed (trigger)...";
+	end if
+    ;
 	if new.person_name  regexp "^\\w+$" then
 		set new.person_name = aes_encrypt(new.person_name, "name");
 	elseif not cast(aes_decrypt(new.person_name, 'name') as char) regexp "^\\w+$" then
@@ -128,31 +136,43 @@ END;;
 DELIMITER ;
 
 insert into person
-	(person_name,person_surname,address,birth,gender,biography,death,repressed)
+	(person_name,person_surname,address,birth,gender,biography,death)
 values
-	('John',"Smith",'32 avenue', '1994-03-12','male','bio', null, null)
+	('John',"Smith",'32 avenue', '1994-03-12','male','bio', null)
 ;
 --
 CREATE TABLE article
 (
 	article_id INT PRIMARY KEY AUTO_INCREMENT,
-    article_number VARCHAR(45),
-    article_name VARCHAR(45),
-    article_text TEXT
+    article_number VARCHAR(45) not null,
+    article_name VARCHAR(45) not null,
+    article_text TEXT not null
 );
 
 CREATE TABLE sentence
 (
 	sentence_id INT PRIMARY KEY AUTO_INCREMENT,
-    sentence_text TEXT
+    sentence_text TEXT not null
 );
+insert into sentence
+	(sentence_id,sentence_text)
+values
+	(-1, 'shot'),
+    (0, 'innocent')
+;
+insert into sentence
+	(sentence_text)
+values
+	('imprisonment for 15 years'),
+    ('15 years of jail')
+;
 
 CREATE TABLE cases
 (
 	case_id INT PRIMARY KEY AUTO_INCREMENT,
     person_id INT,
     article_id INT,
-    start_date DATE,
+    start_date DATE not null,
     end_date DATE,
     authority VARCHAR(45),
     sentence_id INT,
@@ -167,17 +187,22 @@ CREATE TRIGGER cases_check BEFORE INSERT ON cases
 FOR EACH ROW
 BEGIN
 	DECLARE prev_times INT DEFAULT 0;
+    declare last_start date default null;
     
 	IF NEW.start_date < NEW.end_date THEN
 		SIGNAL SQLSTATE '45000'
 		SET MESSAGE_TEXT = 'An error occurred: incorrect time period, check dates.';
 	END IF;
     
-    SELECT times INTO prev_times
-    FROM cases
-    WHERE case_id = NEW.case_id
+    SELECT times, start_date INTO prev_times, last_start FROM cases
+    WHERE person_id = NEW.person_id
     ORDER BY start_date DESC
     LIMIT 1;
+    
+    IF (not last_start is null) and (NEW.start_date < last_start) THEN
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'An error occurred: incorrect time period, check dates.';
+	END IF;
     
     SET NEW.times = prev_times + 1;
     
@@ -186,9 +211,15 @@ END;;
 CREATE TRIGGER cases_update BEFORE update ON cases
 FOR EACH ROW
 BEGIN
+    
 	IF NEW.start_date < NEW.end_date THEN
 		SIGNAL SQLSTATE '45000'
 		SET MESSAGE_TEXT = 'An error occurred: incorrect time period, check dates.';
+	END IF;
+    
+    IF (NEW.start_date != start_date) THEN
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'An error occurred: no change of start date is allowed.';
 	END IF;
     
     SET NEW.times = times;
@@ -197,10 +228,10 @@ DELIMITER ;
 
 CREATE TABLE case_info(
 	info_id INT PRIMARY KEY AUTO_INCREMENT,
-    info_description BLOB,
-    case_id INT,
+    info_description BLOB not null,
+    case_id INT not null,
     info_content BLOB,
-    CONSTRAINT fk_info_cases FOREIGN KEY (case_id) REFERENCES cases (case_id)
+    CONSTRAINT fk_info_cases FOREIGN KEY (case_id) REFERENCES cases(case_id)
 );
 
 DELIMITER //
@@ -209,13 +240,15 @@ for each row
 begin
 	set new.info_content = aes_encrypt(new.info_content, "content")
     ;
+    set new.info_description = aes_encrypt(new.info_description, "info_description");
+    /*
     if new.info_description  regexp "^\\w+$" then
-		set new.info_description = aes_encrypt(new.info_description, "info_description");
+		
 	elseif not cast(aes_decrypt(new.info_description, 'info_description') as char) regexp "^\\w+$" then
 		signal sqlstate '45000'
 		SET MESSAGE_TEXT = "Bad info description (trigger)...";
 	end if
-    ;
+    ;*/
 end //
 DELIMITER ;
 
@@ -225,13 +258,15 @@ for each row
 begin
 	set new.info_content = aes_encrypt(new.info_content, "content")
     ;
+    set new.info_description = aes_encrypt(new.info_description, "info_description");
+    /*
     if new.info_description  regexp "^\\w+$" then
-		set new.info_description = aes_encrypt(new.info_description, "info_description");
+		
 	elseif not cast(aes_decrypt(new.info_description, 'info_description') as char) regexp "^\\w+$" then
 		signal sqlstate '45000'
 		SET MESSAGE_TEXT = "Bad info description (trigger)...";
 	end if
-    ;
+    ;*/
 end //
 DELIMITER ;
 
@@ -247,7 +282,7 @@ DELIMITER ;
 --
 create table party(
 	party_id int primary key auto_increment,
-    party_name varchar(45)
+    party_name varchar(45) not null
 );
 
 create table politics(
@@ -261,7 +296,7 @@ create table politics(
 create table placeD(
 	placeD_id int primary key auto_increment,
     placeD_name varchar(45),
-	location blob,
+	location blob not null,
     placeD_type enum('camp','prison')
 );
 
@@ -269,13 +304,15 @@ DELIMITER //
 create trigger placeD_crypt before insert on placeD
 for each row
 begin
+	set new.location = aes_encrypt(new.location, "location");
+	/*
 	if new.location  regexp "^.+$" then
 		set new.location = aes_encrypt(new.location, "location");
 	elseif not cast(aes_decrypt(new.location, 'location') as char) regexp "^.+$" then
 		signal sqlstate '45000'
 		SET MESSAGE_TEXT = "Bad location (trigger)...";
 	end if
-    ;
+    ;*/
 end //
 DELIMITER ;
 
@@ -290,7 +327,7 @@ DELIMITER ;
 
 create table transfer(
 	transfer_id int primary key auto_increment,
-    transfer_action ENUM('arrival', 'transfer', 'release'),
+    transfer_action enum('arrival', 'transfer', 'release'),
 	transfer_date date,
     case_id int not null,
     placeD_prev int default null,
@@ -306,8 +343,7 @@ for each row
 begin
 	declare death_date date;
     declare cur_person_id int;
-    declare released bool;
-    set released = 0;
+    declare released bool default 0;
     
     select person_id into cur_person_id from cases
     where case_id = new.case_id
@@ -351,9 +387,9 @@ DELIMITER ;
 
 CREATE TABLE rehabilitation(
 	rehabilitation_id INT PRIMARY KEY AUTO_INCREMENT,
-    rehabilitation_date DATE,
+    rehabilitation_date DATE not null,
     rehabilitation_authority VARCHAR(45),
-    case_id INT,
+    case_id INT not null,
     CONSTRAINT fk_rehabilitation_cases FOREIGN KEY (case_id) REFERENCES cases (case_id)
 );
 
@@ -363,17 +399,13 @@ CREATE TRIGGER rehabilitation_check BEFORE INSERT ON rehabilitation
 FOR EACH ROW
 BEGIN
 	DECLARE case_count INT DEFAULT 0;
-    DECLARE new_case INT;
     DECLARE case_start DATE;
-    SET new_case = NEW.case_id;
+   
+    SELECT COUNT(case_id) INTO case_count FROM rehabilitation
+    WHERE case_id = NEW.case_id;
     
-    SELECT COUNT(case_id) INTO case_count 
-    FROM rehabilitation
-    WHERE case_id = new_case;
-    
-    SELECT start_date INTO case_start
-    FROM cases
-    WHERE case_id = new_case;
+    SELECT start_date INTO case_start FROM cases
+    WHERE case_id = NEW.case_id;
     
     IF case_count > 0 OR case_start > NEW.rehabilitation_date THEN
 		SIGNAL SQLSTATE '45000'
@@ -391,9 +423,9 @@ DELIMITER ;
 
 CREATE TABLE shot(
 	shot_id INT PRIMARY KEY AUTO_INCREMENT,
-    case_id INT,
-    shot_date DATE,
-    CONSTRAINT fk_shot_cases FOREIGN KEY (case_id) REFERENCES cases (case_id)
+    case_id INT not null,
+    shot_date DATE not null,
+    CONSTRAINT fk_shot_cases FOREIGN KEY (case_id) REFERENCES cases(case_id)
 );
 
 DELIMITER ;;
@@ -401,15 +433,18 @@ DELIMITER ;;
 CREATE TRIGGER multiple_shot BEFORE INSERT ON shot
 FOR EACH ROW
 BEGIN
-	DECLARE case_count INT DEFAULT 0;
-    DECLARE new_case INT;
-    SET new_case = NEW.case_id;
+	DECLARE shot_count INT DEFAULT 0;
+    DECLARE curr_person INT;
     
-    SELECT COUNT(case_id) INTO case_count 
-    FROM shot
-    WHERE case_id = new_case;
+    SELECT person_id INTO curr_person FROM cases
+    WHERE case_id = NEW.case_id;
     
-    IF case_count > 0 THEN
+    SELECT COUNT(*) INTO shot_count FROM shot 
+		natural join cases 
+			natural join person
+    WHERE person_id = curr_person;
+    
+    IF shot_count > 0 THEN
 		SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'An error occurred: person was shot already (trigger)';
 	END IF;
@@ -418,15 +453,13 @@ END;;
 CREATE TRIGGER shot_sentence BEFORE INSERT ON shot
 FOR EACH ROW
 BEGIN
-	DECLARE sentence INT;
-    DECLARE new_case INT;
-    SET new_case = NEW.case_id;
+	DECLARE curr_sentence INT;
     
-    SELECT sentence_id INTO sentence
+    SELECT sentence_id INTO curr_sentence
     FROM cases
-    WHERE case_id = new_case;
+    WHERE case_id = NEW.case_id;
     
-    IF sentence_id <> -1 THEN
+    IF curr_sentence <> -1 THEN
 		SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'An error occurred: person cannot be shot (trigger)';
 	END IF;
@@ -435,17 +468,14 @@ END;;
 CREATE TRIGGER shot_death_date BEFORE INSERT ON shot
 FOR EACH ROW
 BEGIN
-	DECLARE new_case INT;
-    DECLARE new_person INT;
-    SET new_case = NEW.case_id;
+    DECLARE curr_person INT;
     
-    SELECT person_id INTO new_person
-    FROM cases
-    WHERE case_id = new_case;
+    SELECT person_id INTO curr_person FROM cases
+    WHERE case_id = NEW.case_id;
     
     UPDATE person
 		SET death = NEW.shot_date
-        WHERE person_id = new_person;
+        WHERE person_id = curr_person;
 END;;
 
 CREATE TRIGGER shot_update BEFORE UPDATE ON shot
@@ -458,12 +488,12 @@ DELIMITER ;
 
 CREATE TABLE afterlife(
 	afterlife_id INT PRIMARY KEY AUTO_INCREMENT,
-    person_id INT,
-    case_id INT,
+    person_id INT not null,
+    case_id INT not null,
     address VARCHAR(45),
     occupation VARCHAR(45),
     biography LONGTEXT,
-    afterlife_start_date DATE,
+    afterlife_start_date DATE not null,
     CONSTRAINT fk_afterlife_cases FOREIGN KEY (case_id) REFERENCES cases (case_id),
     CONSTRAINT fk_afterlife_person FOREIGN KEY (person_id) REFERENCES person (person_id)
 );
@@ -475,43 +505,9 @@ BEGIN
 	DECLARE prev_times INT DEFAULT 0;
     DECLARE case_end DATE;
     DECLARE person_death DATE;
-    DECLARE new_case INT;
-    DECLARE new_person INT;
-    DECLARE case_person INT;
-    SET new_person = NEW.person_id;
-    SET new_case = NEW.case_id;
+    DECLARE curr_person INT;
     
-    SELECT end_date, person_id INTO case_end, case_person
-    FROM cases
-    WHERE case_id = new_case;
-    
-    SELECT death INTO person_death
-    FROM person
-    WHERE person_id = NEW.person_id;
-    
-	IF NOT NEW.afterlife_start_date BETWEEN case_end AND person_death THEN
-		SIGNAL SQLSTATE '45000'
-		SET MESSAGE_TEXT = 'An error occurred: incorrect start_date.';
-	END IF;
-    
-    IF new_person <> person_case AND (SELECT COUNT(criminal_id)
-									  FROM criminal_reative
-                                      WHERE criminal_id = case_person AND relative_id = new_person) <> 1
-		THEN
-			SIGNAL SQLSTATE '45000'
-			SET MESSAGE_TEXT = 'An error occurred: person and criminal are not relatives.';
-	END IF;    
-END;;
-
-CREATE TRIGGER afterlife_update BEFORE update ON afterlife
-FOR EACH ROW
-BEGIN
-	DECLARE prev_times INT DEFAULT 0;
-    DECLARE case_end DATE;
-    DECLARE person_death DATE;
-    DECLARE case_person INT;
-
-    SELECT end_date, person_id INTO case_end, case_person
+    SELECT end_date, person_id INTO case_end, curr_person
     FROM cases
     WHERE case_id = NEW.case_id;
     
@@ -524,7 +520,37 @@ BEGIN
 		SET MESSAGE_TEXT = 'An error occurred: incorrect start_date.';
 	END IF;
     
-    IF new_person <> person_case AND (SELECT COUNT(criminal_id)
+    IF NEW.person_id <> curr_person AND (SELECT COUNT(criminal_id)
+									  FROM criminal_reative
+                                      WHERE criminal_id = curr_person AND relative_id = NEW.person_id) <> 1
+		THEN
+			SIGNAL SQLSTATE '45000'
+			SET MESSAGE_TEXT = 'An error occurred: person and criminal are not relatives.';
+	END IF;    
+END;;
+
+CREATE TRIGGER afterlife_update BEFORE update ON afterlife
+FOR EACH ROW
+BEGIN
+	DECLARE prev_times INT DEFAULT 0;
+    DECLARE case_end DATE;
+    DECLARE person_death DATE;
+    DECLARE curr_person INT;
+
+    SELECT end_date, person_id INTO case_end, curr_person
+    FROM cases
+    WHERE case_id = NEW.case_id;
+    
+    SELECT death INTO person_death
+    FROM person
+    WHERE person_id = NEW.person_id;
+    
+	IF NOT NEW.afterlife_start_date BETWEEN case_end AND person_death THEN
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'An error occurred: incorrect start_date.';
+	END IF;
+    
+    IF NEW.person_id <> curr_person AND (SELECT COUNT(criminal_id)
 									  FROM criminal_reative
                                       WHERE criminal_id = NEW.case_id AND relative_id = NEW.person_id) <> 1
 		THEN
@@ -537,26 +563,26 @@ DELIMITER ;
 -- 3-rd 
 CREATE TABLE spyorg(
 	spyorg_id INT PRIMARY KEY AUTO_INCREMENT,
-    spyorg_name VARCHAR(45),
+    spyorg_name VARCHAR(45) not null,
     country VARCHAR(45)
 );
 
 CREATE TABLE person_spyorg(
 	episode_id INT PRIMARY KEY AUTO_INCREMENT,
-    person_id INT,
+    person_id INT not null,
     spyorg_id INT,
-    episode_date DATE,
+    episode_date DATE not null,
     -- episode_action TEXT,
-    standing ENUM('spotted', 'suspected'),
+    standing ENUM('spotted', 'suspected') not null,
     CONSTRAINT fk_episode_person FOREIGN KEY (person_id) REFERENCES person (person_id),
     CONSTRAINT fk_episode_spyorg FOREIGN KEY (spyorg_id) REFERENCES spyorg (spyorg_id)
 );
 
 CREATE TABLE spy_ep_info(
 	info_id INT PRIMARY KEY AUTO_INCREMENT,
-    info_description BLOB,
+    info_description BLOB not null,
     info_content BLOB,
-    spy_ep_id INT,
+    spy_ep_id INT not null,
     CONSTRAINT fk_info_episode FOREIGN KEY (spy_ep_id) REFERENCES person_spyorg (episode_id)
 );
 
@@ -566,15 +592,19 @@ for each row
 begin
 	set new.info_content = aes_encrypt(new.info_content, "content")
     ;
-    if new.info_description  regexp "^\\w+$" then
+    set new.info_description = aes_encrypt(new.info_description, "info_description");
+    /*
+    if new.info_description  regexp "^.+$" then
 		set new.info_description = aes_encrypt(new.info_description, "info_description");
 	elseif not cast(aes_decrypt(new.info_description, 'info_description') as char) regexp "^\\w+$" then
 		signal sqlstate '45000'
 		SET MESSAGE_TEXT = "Bad info description (trigger)...";
 	end if
-    ;
+   
+    ; */
 end //
 DELIMITER ;
+
 
 DELIMITER //
 create trigger spy_ep_info_update_crypt before update on spy_ep_info
@@ -582,13 +612,16 @@ for each row
 begin
 	set new.info_content = aes_encrypt(new.info_content, "content")
     ;
-    if new.info_description  regexp "^\\w+$" then
+    set new.info_description = aes_encrypt(new.info_description, "info_description");
+    /*
+    if new.info_description  regexp "^.+$" then
 		set new.info_description = aes_encrypt(new.info_description, "info_description");
 	elseif not cast(aes_decrypt(new.info_description, 'info_description') as char) regexp "^\\w+$" then
 		signal sqlstate '45000'
 		SET MESSAGE_TEXT = "Bad info description (trigger)...";
 	end if
-    ;
+   
+    ; */
 end //
 DELIMITER ;
 
@@ -606,8 +639,8 @@ CREATE TABLE compromat(
 	compromat_id INT PRIMARY KEY AUTO_INCREMENT,
     person_id INT,
     importance DOUBLE default null,
-    compromat_description blob,
-    compromat_content BLOB not null,
+    compromat_description blob not null,
+    compromat_content BLOB,
     CONSTRAINT fk_compromat_person FOREIGN KEY (person_id) REFERENCES person (person_id)
 );
 
@@ -617,38 +650,44 @@ for each row
 begin
 	set new.compromat_content = aes_encrypt(new.compromat_content, "compromat")
     ;
-    if new.compromat_description  regexp "^\\w+$" then
-		set new.compromat_description = aes_encrypt(new.compromat_description, "compromat_description");
-	elseif not cast(aes_decrypt(new.compromat_description, 'compromat_description') as char) regexp "^\\w+$" then
+    set new.compromat_description = aes_encrypt(new.compromat_description, "compromat_description");
+    /*
+    if new.compromat_description  regexp "^.+$" then
+		
+	elseif not cast(aes_decrypt(new.compromat_description, 'compromat_description') as char) regexp "^.+$" then
 		signal sqlstate '45000'
 		SET MESSAGE_TEXT = "Bad compromat description (trigger)...";
 	end if
-    ;
+    ;*/
 end //
 DELIMITER ;
 
+/*
 DELIMITER //
 create trigger compromat_update_crypt before update on compromat
 for each row
 begin
 	set new.compromat_content = aes_encrypt(new.compromat_content, "compromat")
     ;
-    if new.compromat_description  regexp "^\\w+$" then
-		set new.compromat_description = aes_encrypt(new.compromat_description, "compromat_description");
-	elseif not cast(aes_decrypt(new.compromat_description, 'compromat_description') as char) regexp "^\\w+$" then
+    set new.compromat_description = aes_encrypt(new.compromat_description, "compromat_description");
+    /*
+    if new.compromat_description  regexp "^.+$" then
+		
+	elseif not cast(aes_decrypt(new.compromat_description, 'compromat_description') as char) regexp "^.+$" then
 		signal sqlstate '45000'
 		SET MESSAGE_TEXT = "Bad compromat description (trigger)...";
 	end if
     ;
 end //
 DELIMITER ;
+*/
 
 DELIMITER ;;
 CREATE TRIGGER compromat_importance_eval BEFORE INSERT ON compromat
 FOR EACH ROW
 BEGIN
 	if NEW.importance is null then
-		SET NEW.importance = compromat_importance(); # function to evaluate importance
+		SET NEW.importance = compromat_importance(cast(aes_decrypt(new.compromat_description, "compromat_description") as char)); 
 	end if;
 END;;
 
@@ -664,11 +703,12 @@ END//
 DELIMITER ;
 
 CREATE TABLE criminal_relative(
-	criminal_id INT,
-    relative_id INT,
-    relation2criminal ENUM('spouse', 'sibling', 'parent', 'child', 'distant'),
+	criminal_id INT not null,
+    relative_id INT not null,
+    relation2criminal ENUM('spouse', 'sibling', 'parent', 'child', 'distant') default 'distant',
     CONSTRAINT fk_relative_person FOREIGN KEY (relative_id) REFERENCES person (person_id),
-    CONSTRAINT fk_criminal_person FOREIGN KEY (criminal_id) REFERENCES person (person_id)
+    CONSTRAINT fk_criminal_person FOREIGN KEY (criminal_id) REFERENCES person (person_id),
+    primary key(criminal_id, relative_id)
 );
 
 DELIMITER ;;
