@@ -14,7 +14,6 @@ BEGIN
     COMMIT;    
 END;;
 
-
 CREATE PROCEDURE prisoner_arrival(IN to_place INT, IN person_case INT, IN transf_date DATE)
 BEGIN
 	START TRANSACTION;
@@ -129,6 +128,22 @@ BEGIN
 	FROM compromat
     WHERE person_id = curr_person
     ORDER BY importance DESC;
+END;;
+
+CREATE PROCEDURE case_details (IN curr_case INT)
+BEGIN
+	SELECT CAST(AES_DECRYPT(person.person_name, 'name') AS CHAR) AS person_name,
+		   CAST(AES_DECRYPT(person.person_surname, 'surname') AS CHAR) AS person_surname,
+           article.article_name AS article_name,
+           cases.start_date AS start_date,
+           cases.end_date AS end_date,
+           cases.authority,
+           sentence.sentence_text
+	FROM cases
+    INNER JOIN person ON person.person_id = cases.person_id
+    INNER JOIN article ON article.article_id = cases.article_id
+    INNER JOIN sentence ON sentence.sentence_id = cases.sentence_id
+    WHERE cases.case_id = curr_case;
 END;;
 
 DELIMITER ;
