@@ -46,17 +46,18 @@ VALUES
 ('SSPISN-2', 'Siberia', 'prison'),
 ('SSPILN-1', 'Lokchimlag', 'prison');
 
+drop procedure insert_into_politics;
 DELIMITER ;;
 CREATE PROCEDURE insert_into_politics()
 BEGIN
-	DECLARE i INT DEFAULT 0;
+	DECLARE i INT DEFAULT 1;
 	insert_loop: LOOP
 		INSERT INTO politics
 		(person_id, party_id)
 		VALUES
-		(FLOOR(RAND()*50+1), FLOOR(RAND()*4+1));
+		(i, FLOOR(RAND()*4+1)); -- (1+FLOOR(RAND()*5), FLOOR(RAND()*4+1));
         SET i = i + 1;
-        IF i > 20 THEN
+        IF i > 5 THEN
 			LEAVE insert_loop;
 		END IF;
 	END LOOP insert_loop;

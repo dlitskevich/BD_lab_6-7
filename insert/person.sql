@@ -23,17 +23,29 @@ values
 insert into cases
 	(person_id, article_id, start_date, end_date, authority, sentence_id, times)
 values
-	(1, 1, '1962-10-16', '1963-10-13', 'SMT', -1, 123)
+	(1, 1, '1962-10-16', '1963-10-13', 'SMT', -1, 123),
+    (2, 8, '1962-10-16', '1963-10-13', 'SMT', 9, 123)
 ;
 
-/* update test
-update cases
-	set start_date = '1962-10-16'
-where case_id = 1;
-*/
+insert into case_info
+	(info_description, case_id, info_content)
+values
+	('evidence1',1,'witness')
+;
+
 
 insert into shot
 	(case_id, shot_date)
 values
 	(1, '1862-10-17')
+;
+
+insert into afterlife
+	(person_id,case_id, address,  occupation, afterlife_start_date, biography)
+values
+	(2, 1, 'Novosibirsk', 'nurse', '1862-11-17', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
+    (3, 1, 'Novosibirsk', null, '1862-11-17', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
+    (4, 1, 'Novosibirsk', null, '1862-11-17', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
+    (5, 1, 'Novosibirsk', null, '1862-11-17', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY')
+    
 ;

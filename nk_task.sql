@@ -4,6 +4,7 @@ drop database ALLIDB;
 SET FOREIGN_KEY_CHECKS = 0; 
 TRUNCATE table person;
 TRUNCATE table shot;
+TRUNCATE table politics;
 SET FOREIGN_KEY_CHECKS = 1;
 
 
@@ -19,11 +20,26 @@ select person_id,
        cast(aes_decrypt(biography, 'biography') as char) from person;
 
 select * from criminal_relative;
+select * from afterlife;
+
+select * from party;
+select * from politics;
+
+select * from compromat;
 
 select * from cases;
+select * from case_info;
+select * from sentence;
+select * from article;
+select * from rehabilitation;
 
 select * from shot;
+select * from placeD;
+select* from transfer;
 
+select * from spyorg;
+select * from person_spyorg;
+select * from spy_ep_info;
 
 
 

@@ -293,11 +293,11 @@ create table party(
 );
 
 create table politics(
-	politics_id int primary key auto_increment,
     person_id int not null,
 	party_id int,
     constraint fk_politics_person foreign key (person_id) references person(person_id),
-    constraint fk_politics_party foreign key (party_id) references party(party_id)
+    constraint fk_politics_party foreign key (party_id) references party(party_id),
+    primary key(person_id, party_id)
 );
 
 create table placeD(
@@ -515,20 +515,19 @@ CREATE TABLE afterlife(
 );
 
 DELIMITER ;;
+-- drop trigger afterlife_check;;
 CREATE TRIGGER afterlife_check BEFORE INSERT ON afterlife
 FOR EACH ROW
 BEGIN
 	DECLARE prev_times INT DEFAULT 0;
     DECLARE case_end DATE;
-    DECLARE person_death DATE;
+    DECLARE person_death DATE default(curdate());
     DECLARE curr_person INT;
     
-    SELECT end_date, person_id INTO case_end, curr_person
-    FROM cases
+    SELECT end_date, person_id INTO case_end, curr_person FROM cases
     WHERE case_id = NEW.case_id;
     
-    SELECT death INTO person_death
-    FROM person
+    SELECT cast(aes_decrypt(death, 'death')as date) INTO person_death FROM person
     WHERE person_id = NEW.person_id;
     
 	IF NOT NEW.afterlife_start_date BETWEEN case_end AND person_death THEN
@@ -550,13 +549,13 @@ FOR EACH ROW
 BEGIN
 	DECLARE prev_times INT DEFAULT 0;
     DECLARE case_end DATE;
-    DECLARE person_death DATE;
+    DECLARE person_death DATE default(curdate());
     DECLARE curr_person INT;
-
+    
     SELECT end_date, person_id INTO case_end, curr_person FROM cases
     WHERE case_id = NEW.case_id;
     
-    SELECT death INTO person_death FROM person
+    SELECT cast(aes_decrypt(death, 'death')as date) INTO person_death FROM person
     WHERE person_id = NEW.person_id;
     
 	IF NOT NEW.afterlife_start_date BETWEEN case_end AND person_death THEN
@@ -566,11 +565,11 @@ BEGIN
     
     IF NEW.person_id <> curr_person AND (SELECT COUNT(criminal_id)
 									  FROM criminal_reative
-                                      WHERE criminal_id = NEW.case_id AND relative_id = NEW.person_id) <> 1
+                                      WHERE criminal_id = curr_person AND relative_id = NEW.person_id) <> 1
 		THEN
 			SIGNAL SQLSTATE '45000'
 			SET MESSAGE_TEXT = 'An error occurred: person and criminal are not relatives.';
-	END IF;    
+	END IF;     
 END;;
 DELIMITER ;
 
