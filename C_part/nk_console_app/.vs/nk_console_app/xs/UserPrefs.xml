@@ -1,0 +1,28 @@
+﻿<Properties StartupConfiguration="{7E137999-4C71-4864-B9E4-E8CA3EAAFF8F}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="nk_console_app/Program.cs">
+    <Files>
+      <File FileName="nk_console_app/Program.cs" Line="19" Column="1" />
+      <File FileName="nk_console_app/DAL.cs" Line="35" Column="6" />
+      <File FileName="../../../../../../Downloads/Labs/DataBase/Projects/DbApp1/DbApp1/DAL.cs" Line="108" Column="46" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="nk_console_app" expanded="True">
+            <Node name="nk_console_app" expanded="True">
+              <Node name="Program.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.nk__console__app PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|anycpu" />
+  <Debugger.DebugSourceFolders />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

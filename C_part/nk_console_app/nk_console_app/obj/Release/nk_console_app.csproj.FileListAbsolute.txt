@@ -1,0 +1,13 @@
+/Users/danila/Documents/MySQL/DB/Lab_6(NK)/C_part/nk_console_app/nk_console_app/bin/Release/nk_console_app.exe.config
+/Users/danila/Documents/MySQL/DB/Lab_6(NK)/C_part/nk_console_app/nk_console_app/bin/Release/nk_console_app.exe
+/Users/danila/Documents/MySQL/DB/Lab_6(NK)/C_part/nk_console_app/nk_console_app/bin/Release/BouncyCastle.Crypto.dll
+/Users/danila/Documents/MySQL/DB/Lab_6(NK)/C_part/nk_console_app/nk_console_app/bin/Release/Google.Protobuf.dll
+/Users/danila/Documents/MySQL/DB/Lab_6(NK)/C_part/nk_console_app/nk_console_app/bin/Release/MySql.Data.dll
+/Users/danila/Documents/MySQL/DB/Lab_6(NK)/C_part/nk_console_app/nk_console_app/bin/Release/Renci.SshNet.dll
+/Users/danila/Documents/MySQL/DB/Lab_6(NK)/C_part/nk_console_app/nk_console_app/bin/Release/Google.Protobuf.xml
+/Users/danila/Documents/MySQL/DB/Lab_6(NK)/C_part/nk_console_app/nk_console_app/bin/Release/Renci.SshNet.xml
+/Users/danila/Documents/MySQL/DB/Lab_6(NK)/C_part/nk_console_app/nk_console_app/bin/Release/MySql.Data.xml
+/Users/danila/Documents/MySQL/DB/Lab_6(NK)/C_part/nk_console_app/nk_console_app/obj/Release/nk_console_app.csprojAssemblyReference.cache
+/Users/danila/Documents/MySQL/DB/Lab_6(NK)/C_part/nk_console_app/nk_console_app/obj/Release/nk_console_app.exe.config
+/Users/danila/Documents/MySQL/DB/Lab_6(NK)/C_part/nk_console_app/nk_console_app/obj/Release/nk_console_app.csproj.CopyComplete
+/Users/danila/Documents/MySQL/DB/Lab_6(NK)/C_part/nk_console_app/nk_console_app/obj/Release/nk_console_app.exe
