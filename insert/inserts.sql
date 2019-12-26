@@ -67,13 +67,13 @@ END;;
 
 CREATE PROCEDURE insert_into_rehabilitation()
 BEGIN
-	DECLARE i INT DEFAULT 0;
+	DECLARE i INT DEFAULT 1;
 	insert_loop: LOOP
 		INSERT INTO rehabilitation
 		(rehabilitation_date, rehabilitation_authority, case_id)
 		VALUES
-		('1980-01-01' - INTERVAL FLOOR(RAND() * 365) DAY, 'Good Guys', FLOOR(RAND()*25+1));
-        IF i > 10 THEN
+		('1980-01-01' - INTERVAL FLOOR(RAND() * 365) DAY, 'Good Guys', i);
+        IF i > 20 THEN
 			LEAVE insert_loop;
 		END IF;
         SET i = i + 1;
