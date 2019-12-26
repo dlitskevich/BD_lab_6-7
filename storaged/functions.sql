@@ -1,11 +1,11 @@
 USE ALLIDB;
 
 DELIMITER //
-CREATE FUNCTION compromat_importance(in describ text)
+CREATE FUNCTION compromat_importance(describ text)
 RETURNS DOUBLE
 BEGIN
     RETURN rand()*100;
-END;;
+END//
 
 DELIMITER ;;
 
@@ -24,6 +24,8 @@ BEGIN
     RETURN percent;
 END;;
 
+select rehabilitated_cases();
+
 CREATE FUNCTION rehabilitated_people()
 RETURNS DOUBLE
 BEGIN
@@ -41,6 +43,9 @@ BEGIN
     
     RETURN percent;
 END;;
+
+
+
 
 CREATE FUNCTION shot_percent()
 RETURNS DOUBLE
