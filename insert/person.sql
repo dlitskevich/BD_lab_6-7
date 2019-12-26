@@ -521,6 +521,7 @@ values
     (36, 'RnWKXUYdhntLbwPxnkYdgImMGNKQHMEZMQhtYAWt','WIlmuTtFRfJRKRJYhISVGcTuxkTVHtCxcUiLSmWjugcYmTslVUmSPtTygMPyhGboNxdlhP')
 ;
 
+
 insert into afterlife
 	(person_id,case_id, address,  occupation, afterlife_start_date, biography)
 values
