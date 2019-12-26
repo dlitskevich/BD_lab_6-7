@@ -24,9 +24,9 @@ namespace nk_console_app {
 			connection.Close ();
 		}
 
-		public void Display(string table_name)
+		public void Display(string table_name, string fields="*", string where="")
 		{
-			MySqlCommand command = new MySqlCommand(String.Format("SELECT * FROM {0}", table_name), connection);
+			MySqlCommand command = new MySqlCommand(String.Format("SELECT {1} FROM {0} {2}", table_name, fields, where), connection);
 			DataTable restable = new DataTable();
 			using (MySqlDataReader dr = command.ExecuteReader()) {
 				if (dr.HasRows) {
@@ -40,30 +40,65 @@ namespace nk_console_app {
 			}
 		}
 
-
-
-		public void UpdateWithParams(string name, int value) {
-			MySqlCommand updateCommand = new MySqlCommand (String.Format ("UPDATE studs SET st_value={1} WHERE st_surname='{0}'", name, value), connection);
-			int res = updateCommand.ExecuteNonQuery ();
-			Console.WriteLine ("{0} rows affected!", res);
-		}
-
-
-
 		private static void DisplayTable(DataTable dt) {
 
-			for (int curCol = 0; curCol < dt.Columns.Count; curCol++) {
-				Console.Write("{0,-25}", dt.Columns[curCol].ColumnName);
+			for (int column = 0; column < dt.Columns.Count; column++) {
+				Console.Write("{0,-25}", dt.Columns[column].ColumnName);
 			}
 			Console.WriteLine("\n  ");
 
-			for (int curRow = 0; curRow < dt.Rows.Count; curRow++) {
-				for (int curCol = 0; curCol < dt.Columns.Count; curCol++) {
-					Console.Write("{0,-15}", dt.Rows[curRow][curCol].ToString());
+			for (int row = 0; row < dt.Rows.Count; row++) {
+				for (int column = 0; column < dt.Columns.Count; column++) {
+					Console.Write("{0,-15}", dt.Rows[row][column].ToString());
 				}
 				Console.WriteLine();
 			}
 		}
+
+
+
+		public void UpdateTable(string table, string set, string where) {
+			MySqlCommand updateCommand = new MySqlCommand(String.Format("UPDATE {0} SET {1} WHERE {2}", table, set, where), connection);
+			int res = updateCommand.ExecuteNonQuery();
+			Console.WriteLine("{0} rows affected!", res);
+		}
+
+		public void UpdateTableConsole() {
+			Console.WriteLine("Enter table name");
+			string table = Console.ReadLine();
+			
+			Console.WriteLine(table);
+			DataTable dt = getTableAsDataTable(table);
+			string set = "";
+			string set_value = "";
+
+			for (int column = 0; column < dt.Columns.Count; column++) {
+				Console.WriteLine("Enter "+ dt.Columns[column].ColumnName);
+				set_value = Console.ReadLine();
+				if (set_value == "") {
+					continue;
+				} else {
+					set += dt.Columns[column].ColumnName +"='"+ set_value + "',";
+				}
+			}
+			set = set.Remove(set.Length - 1);
+			Console.WriteLine(set);
+
+			Console.WriteLine("Enter where clause");
+			string where = Console.ReadLine();
+
+			UpdateTable(table, set, where);
+		}
+
+		private DataTable getTableAsDataTable(string table, string field = "*") {
+			MySqlCommand cmd = new MySqlCommand(String.Format("SELECT {1} FROM {0} ", table, field), connection);
+			DataTable res_table = new DataTable();
+			using (MySqlDataReader dr = cmd.ExecuteReader()) {
+				res_table.Load(dr);
+			}
+			return res_table;
+		}
+
 	}
 }
 

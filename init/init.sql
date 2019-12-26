@@ -37,7 +37,7 @@ BEGIN
     where person_id=new.person_id;
     
     
-    if was_shot > 0 and cast(aes_decrypt(old.death,'death')as date)!=new.death then
+    if old.death!=new.death and was_shot > 0 and cast(aes_decrypt(old.death,'death')as date)!=new.death then
 		signal sqlstate '45001'
         set message_text = 'bad death date: He definetly was shot (trigger)';
     end if;

@@ -1,5 +1,9 @@
 use alliDB;
-
+/*
+update person
+	set person_name='flag'
+where person_id=17;
+*/
 insert into alliDB.person
 	(person_name,person_surname,address,birth,gender,biography,death)
 values
