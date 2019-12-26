@@ -121,6 +121,7 @@ BEGIN
 	END LOOP insert_loop;
 END;;*/
 
+-- drop procedure insert_into_spy_ep_info;;
 CREATE PROCEDURE insert_into_spy_ep_info()
 BEGIN
 	DECLARE i INT DEFAULT 0;
@@ -128,7 +129,7 @@ BEGIN
 		INSERT INTO spy_ep_info
 		(info_description, spy_ep_id, info_content)
 		VALUES
-		(CONV(FLOOR(RAND() * 99999999999999), 30, 36), FLOOR(RAND()*23+1), CONV(FLOOR(RAND() * 99999999999999), 15, 36));
+		(CONV(FLOOR(RAND() * 100000000000), 30, 36), FLOOR(RAND()*23+1), CONV(FLOOR(RAND() * 100000000000), 15, 36));
         IF i > 20 THEN
 			LEAVE insert_loop;
 		END IF;
