@@ -420,10 +420,29 @@ values
     ('evidence 100%', 48,'bdeizJXFpkEZPuhlEJIZRmRGOpdLDzAkWAJdeeBS')
 ;
 
+select * from cases
+where sentence_id=-1;
 
 call shoot_person(1, '1963-10-17');
 call shoot_person(3, '1963-10-17');
 call shoot_person(4, '1963-10-17');
+
+call shoot_person(12, '1965-06-11');
+call shoot_person(20, '1965-09-16');
+call shoot_person(23, '1965-06-19');
+call shoot_person(28, '1965-07-25');
+call shoot_person(29, '1964-07-27');
+call shoot_person(52,'1967-10-17');
+call shoot_person(53,'1967-10-17');
+call shoot_person(54,'1967-10-17');
+call shoot_person(55,'1967-10-17');
+call shoot_person(56,'1967-10-17');
+call shoot_person(57,'1967-10-17');
+call shoot_person(58,'1967-10-17');
+call shoot_person(59,'1967-10-17');
+call shoot_person(60,'1967-10-17');
+call shoot_person(61,'1967-10-17');
+call shoot_person(62,'1967-10-17');
 
 
 call prisoner_arrival(1, 5, '1963-10-17');

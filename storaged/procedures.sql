@@ -14,6 +14,7 @@ BEGIN
     COMMIT;
 END;;
 
+
 CREATE PROCEDURE prisoner_transfer(IN from_place INT, IN to_place INT, IN person_case INT, IN transf_date DATE)
 BEGIN
 	START TRANSACTION;
