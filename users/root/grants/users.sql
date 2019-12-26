@@ -5,10 +5,10 @@ GRANT SELECT, UPDATE, INSERT ON ALLIDB.cases TO cases_manager;
 GRANT SELECT, UPDATE, INSERT ON ALLIDB.sentence TO cases_manager;
 GRANT SELECT, UPDATE, INSERT ON ALLIDB.case_info TO cases_manager;
 GRANT SELECT ON ALLIDB.article TO cases_creator;
+GRANT SELECT ON ALLIDB.person TO cases_manager;
 GRANT EXECUTE ON ALLIDB.view_cases TO cases_manager;
 GRANT EXECUTE ON ALLIDB.create_case TO cases_manager;
 GRANT EXECUTE ON ALLIDB.case_details TO cases_manager;
-GRANT SELECT ON ALLIDB.person TO cases_manager;
 GRANT EXECUTE ON ALLIDB.view_person_by_id TO cases_manager;
 GRANT EXECUTE ON ALLIDB.view_person_by_name TO cases_manager;
 
