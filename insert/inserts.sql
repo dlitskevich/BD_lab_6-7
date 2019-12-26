@@ -49,7 +49,6 @@ VALUES
 ('SSPISN-2', 'Siberia', 'prison'),
 ('SSPILN-1', 'Lokchimlag', 'prison');
 
-drop procedure insert_into_politics;
 DELIMITER ;;
 CREATE PROCEDURE insert_into_politics()
 BEGIN
@@ -60,7 +59,7 @@ BEGIN
 		VALUES
 		(i, FLOOR(RAND()*4+1)); -- (1+FLOOR(RAND()*5), FLOOR(RAND()*4+1));
         SET i = i + 1;
-        IF i > 5 THEN
+        IF i > 65 THEN
 			LEAVE insert_loop;
 		END IF;
 	END LOOP insert_loop;
@@ -77,6 +76,7 @@ BEGIN
         IF i > 10 THEN
 			LEAVE insert_loop;
 		END IF;
+        SET i = i + 1;
 	END LOOP insert_loop;
 END;;
 
@@ -87,24 +87,26 @@ BEGIN
 		INSERT INTO person_spyorg
 		(person_id, spyorg_id, episode_date, standing)
 		VALUES
-		(FLOOR(RAND()*50+1), FLOOR(RAND()*4+1), '1960-01-01' - INTERVAL FLOOR(RAND() * 365) DAY, 'spotted');
-        IF i > 20 THEN
+		(FLOOR(RAND()*10)+55, FLOOR(RAND()*4+1), '1960-01-01' - INTERVAL FLOOR(RAND() * 365) DAY, 'spotted');
+        IF i > 10 THEN
 			LEAVE insert_loop_spotted;
 		END IF;
+        SET i = i + 1;
 	END LOOP insert_loop_spotted;
     
     insert_loop_suspected: LOOP
 		INSERT INTO person_spyorg
 		(person_id, spyorg_id, episode_date, standing)
 		VALUES
-		(FLOOR(RAND()*50+1), FLOOR(RAND()*4+1), '1960-01-01' - INTERVAL FLOOR(RAND() * 365) DAY, 'suspected');
-        IF i > 50 THEN
+		(FLOOR(RAND()*10)+55, FLOOR(RAND()*4+1), '1960-01-01' - INTERVAL FLOOR(RAND() * 365) DAY, 'suspected');
+        IF i > 20 THEN
 			LEAVE insert_loop_suspected;
 		END IF;
+        SET i = i + 1;
 	END LOOP insert_loop_suspected;
 END;;
 
-CREATE PROCEDURE insert_into_case_info()
+/*CREATE PROCEDURE insert_into_case_info()
 BEGIN
 	DECLARE i INT DEFAULT 0;
 	insert_loop: LOOP
@@ -115,8 +117,9 @@ BEGIN
         IF i > 20 THEN
 			LEAVE insert_loop;
 		END IF;
+        SET i = i + 1;
 	END LOOP insert_loop;
-END;;
+END;;*/
 
 CREATE PROCEDURE insert_into_spy_ep_info()
 BEGIN
@@ -129,6 +132,7 @@ BEGIN
         IF i > 20 THEN
 			LEAVE insert_loop;
 		END IF;
+        SET i = i + 1;
 	END LOOP insert_loop;
 END;;
 
@@ -137,5 +141,4 @@ DELIMITER ;
 CALL insert_into_politics();
 CALL insert_into_rehabilitation();
 CALL insert_into_person_spyorg();
-CALL insert_into_case_info();
 CALL insert_into_spy_ep_info();
