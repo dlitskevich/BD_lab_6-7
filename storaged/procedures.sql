@@ -2,6 +2,18 @@ USE ALLIDB;
 
 DELIMITER ;;
 
+CREATE PROCEDURE shoot_person(IN curr_case INT, IN curr_date DATE)
+BEGIN
+	START TRANSACTION;
+    
+    INSERT INTO shot
+    (case_id, shot_date)
+    VALUES
+    (curr_case, curr_date);
+    
+    COMMIT;
+END;;
+
 CREATE PROCEDURE prisoner_transfer(IN from_place INT, IN to_place INT, IN person_case INT, IN transf_date DATE)
 BEGIN
 	START TRANSACTION;
@@ -144,6 +156,14 @@ BEGIN
     INNER JOIN article ON article.article_id = cases.article_id
     INNER JOIN sentence ON sentence.sentence_id = cases.sentence_id
     WHERE cases.case_id = curr_case;
+END;;
+
+CREATE PROCEDURE create_case(IN curr_person INT, IN curr_article INT, IN curr_start DATE, IN curr_end DATE, IN curr_authority VARCHAR(45), IN curr_sentence INT)
+BEGIN
+	INSERT INTO cases
+    (person_id, article_id, start_id, end_id, authority, sentence_id)
+    VALUES
+    (curr_person, curr_article, curr_start, curr_end, curr_authority, curr_sentence);
 END;;
 
 DELIMITER ;
