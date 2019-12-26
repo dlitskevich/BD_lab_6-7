@@ -1,5 +1,12 @@
 USE ALLIDB;
 
+DELIMITER //
+CREATE FUNCTION compromat_importance(in describ text)
+RETURNS DOUBLE
+BEGIN
+    RETURN rand()*100;
+END;;
+
 DELIMITER ;;
 
 CREATE FUNCTION rehabilitated_cases()

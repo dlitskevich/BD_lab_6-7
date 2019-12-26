@@ -721,6 +721,7 @@ CREATE TABLE compromat(
     CONSTRAINT fk_compromat_person FOREIGN KEY (person_id) REFERENCES person (person_id)
 );
 
+
 DELIMITER ;;
 CREATE TRIGGER compromat_importance_eval BEFORE INSERT ON compromat
 FOR EACH ROW

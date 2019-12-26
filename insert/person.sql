@@ -420,8 +420,6 @@ values
     ('evidence 100%', 48,'bdeizJXFpkEZPuhlEJIZRmRGOpdLDzAkWAJdeeBS')
 ;
 
-select * from cases
-where sentence_id=-1;
 
 call shoot_person(1, '1963-10-17');
 call shoot_person(3, '1963-10-17');
@@ -432,6 +430,7 @@ call shoot_person(20, '1965-09-16');
 call shoot_person(23, '1965-06-19');
 call shoot_person(28, '1965-07-25');
 call shoot_person(29, '1964-07-27');
+
 call shoot_person(52,'1967-10-17');
 call shoot_person(53,'1967-10-17');
 call shoot_person(54,'1967-10-17');
@@ -455,6 +454,70 @@ call prisoner_release(4, 5, '1978-10-17');
 call prisoner_release(2, 6, '1983-10-18');
 call prisoner_release(3, 7, '1983-10-18');
 
+insert into compromat
+	(person_id,compromat_description, compromat_content)
+values
+	(54, 'iNihJPcPUgHgDkdAQbFQAgZBcNwgzFGRXSZnxVLq','mjJTKLtqvvQbvZgJUzfWaczBdgqVkrslAemoUCIJscgCQtYjTWOvjpeJCaSdwunpWRvpET'),
+    (25, 'sTROVteQcgWLgkYbEHPgWaeGLEtapAtZEVqTzBAK','FtWXZNUhmcALjXEqNtNRGvwNPKRxiuJKeKVXUzXIWUkIgyMJLflmHWCiJKwASbeYulJLzQ'),
+    (9, 'FklEvIHCwUngZNtAFENWmQbrraOZkfnZXrizRUbK','aLhxeQrdMbcMedoodJDkmNNZeLABUvcbYyrGBHEOnyOLmDSZQlGCAUueqaNYGTmCSmAWBy'),
+    (17, 'vWBKPwVKLuchkDBrfeQdphsdwrDlPLUKxqTRUvfs','VCveNcOkXsoWQkjmiACFfIvNGKWzuuGygIeVyrvWGdomchsRgHvWZJpkcaRxwVngGGtbId'),
+    (25, 'jawpkrOOIYHAzCTzbDlRtvlXrSizpRYfGZggzNpM','kwBlGNRaEpikroyReMrOXREbQLSheAAPioMyikXIJyChncIPpcePMQculuYCLylhtdNYZQ'),
+    (6, 'KOFOCbChKAVUSAfWgXbBRdAEhwFYTmZPKluwgHEV','dtFaMkXlbJUhZbATEdESiDeZPtVayivnUHmRIvsVktTujoNczuWflCAiNuWnJJPZnqLjZG'),
+    (29, 'njZCEiesgUHueePhDSCmxQZnuWFDFvyDXoCtOigt','nXtOqyckEwIIyTNNPFGvWtXITpSCZAfMjCcrgEYfhwzuDrNKUXrVHzDYmwuRMZEgjRWwPw'),
+    (42, 'neAKODWszUlpWGnZjRTwOuUDTIcebrgsVoIXfFRc','RRVqeAVzJWybFzPUGbCpIhquMpvtYsSZuOpfpRYztjPjFtAGORFxMjuKnliWRlqzBKNTih'),
+    (18, 'nOMYlTELvoifJvrHurgvULDGtodeqSMKZlSWJIgh','OqcpIVIHGfjvNqAXRdGtordTlsuPjSdEaoccNJpxmtzeJySFrZKJhgUqRGBoZymbWFpwto'),
+    (65, 'KVxbffPxxrtffqGtsZCDHKmhRxyfzVHslkrkKLll','tojPYWcwSgFWFxrlVWhssrPLjRzszVdsCkUQdBdSxuAVdjLECDbmFkhzMcBImEMMRZICVw'),
+    (3, 'VOtkFSYscQwlYCSAuxMarkBOoodQXXYIQmWTXhhW','yylzQMUhyEnaUTEZwIGHCMaoxPUutCCUznxOxdtrzBCpmkMsByNRZwamMuCgcolrsTCDQJ'),
+    (40, 'WOOFQUdDjeTTIwFDlssulfwqYiPZEDdbHQrtnXvP','yCkCEvnufLLNBzFbTfDhhSxybriEagInppvVpMQoWmasgWMkJUDQFLjNxfTSOdYrklcIKa'),
+    (51, 'IfUXEzoqGRIVQnctFiUWuhhucJfEphVJJUktpXrJ','ecDDjeVHbuMtbUlSHzfWQKNzdPgmWuikQJeARePoxQYsKkXwnuChsvXMsnGCWyVIIfxeya'),
+    (4, 'QwUMUuEmcjcviSKLJuayEQFlBvIYDtjlsSHULWgx','tTNRsaVLZDMkSMgbxDKIcTaIVLSmvcgsggINrgBktEuGtDzjljbwCdwAjTXZcmhUxbXwDp'),
+    (22, 'laxCKQtYKdHnzwqGbAFSPNFLbdNqmZFHNoQlHDWS','ksgTuHfKheMRgljVstBglMKxFccOfpKiyEaxksKkeSlQCBVpoYMnuQwcwgPAdcStJWbPDe'),
+    (1, 'JQisYcvIxyWuWESFEDeHYlacqPVVNVNJlwUbVpBf','PiMOyVnnbpteOLczAKWwwrYoJEqJyHUGIThCWhzuNnARYatpHVfsJYyPdWaoFIfDAgSziw'),
+    (16, 'cxKvtJtKJcAMEoiTkCOhXDnNNPxfJZYnFPJXzjkQ','rXRUvChcajfWvvguNpjRXAqkARfMmvmacAbqyRDLvlGAIxgvKyHXCNUxnnRbbNsTLSqTIl'),
+    (60, 'aPiYLZRyveXNNhkykJcVPJsGwAXtuYXWjCnAkwbY','rkbgTNwZtZwYmWLLeCusMOtzEynbXDLTfguwjhzTSDDvlBmGkeRWDEweSxexMcjpwSvYtO'),
+    (7, 'NqaDpwOYtYYftutifKlbkxZvobBqgOaeJAhABdPt','wzJeVSIqpPAZnXPzVJkkpuscXGCIDGklYtCrJnmeFKHjPDCeGwlxgrkCvSwehZRGtnhUiG'),
+    (47, 'HtDRHIuEQQcOzQfdhILKkFLrDViNwmOcHjaduBFt','PjrILErXFWLrZmWLzAjneVlEkHxDFsKxRnuffKMjHlnpKHUfNGoSuCgmfmGwpcMFVNcOAW'),
+    (41, 'JKzUqOpWVOwOeGzoESToUlpoMhonnigBIGadTyRQ','dKGbvBmggyozvWTAylrpAXKMyDdBkxTqFELoCIlKXkyowYXRyPBJpqpiTIrhaMxXgRDMkL'),
+    (54, 'bCemIMyPESxIbTrPAaXSbctbshtKDfLAXtHRTwBc','zSlzkHdfUEbTasmlzZDZawQorlMOEgIISQcJEknIxkMpngXHYVJtpvrcCxfdfxFRYthQXP'),
+    (4, 'CLTmJkxfXdXfPjqprACvSUuxqFxVIDbWZHqSTyIt','LutRHQYuIvKZfUhhtzLLczagQLlmBfxLvHabIBclFSpFQwVknoOlmwsEpUzIXcikvilorq'),
+    (4, 'rVrKbsgUOwZqqjfaBBkEcZfEyfNDdltwUgNzIprI','kDSZgdRHzbJQylIQlZozZnITDnXBpseTahtAfIIFZYELFZjRyzyjgCgXFYlDHzGHLkVPzK'),
+    (9, 'rXPlVzRkwEZxRsCaPQIqEPzGpAVXkVrLvKeQJXBy','bhwGujnUFSuYBoAGKnFjJcMkOkXthDpoJBFLfaOEzNkbjUaJkGJDHOoeeToUSCXVxkzWtS'),
+    (39, 'TvlXweJlgLaCQWrxEBObTknxXOqqTrRhZqAtHGwD','ipXjNAsVcXfjhGeoeMfPXBeDqiVEqsZeSHLXjtcWmQcHPxYQDHfkFPGrSsocMZkgJcZyYB'),
+    (41, 'jClPqDghANzRLtzqHvrSIEBOzztYPqVPVbPrCadS','PuOGYWWMTPhTCPDUdJjMhkrYqGxlTbTHZAyPjNsOrZOppgxRkAtpmrSTWnHcrQOJGdtXUN'),
+    (49, 'LqjzHHPpCNrjLUVmeKgXNmqAYrVOUOcAHfYyhcpx','nnPQnSGqeNrzDNJJQOYgoyHdnurEwSgoEWYfUlTuutDvVIwpQjxTcpOnGKscQrylmLXQhR'),
+    (65, 'vTCliRnYrDPDDWgcZhuzSwQgxVIOnsfQIJiEuViU','agAnwSiucHAmbWqiEWBMKDfplaHuWzDtkwphKdVPVhvfiRYdWfPhjGiyEuEBNthnhLrgqK'),
+    (25, 'NhPrYxlzsQhRoLFvoOtSdfrIeTDkKtnekRDgJXCS','oLePdptcngGgoKxoyDPUvbOcyOKiXegHLdKEXOHpgqAVbhDQtyXPWjbGcRvicnQqDcELeG'),
+    (7, 'PDmchAzRpflABAfnqTyhkAHjEIcVuRveZUMbhowt','lXDidKDGfNhvTjVKYxwKCnsQqigGiYFaJCBIvHGUYNKWWIfPBaeSPhGINWeEaxIUtvhGpQ'),
+    (53, 'bSuickZIaezvRYOtkCAEpFPuGyZFUManymVrEjwK','VGKEPAkgnIFzrqhFVIhRzbAxwpwXbgTeDeMvMYZITQhwrtmgnkIMwobVFCSatvcBQaUpgt'),
+    (28, 'MufUYKprJLuSEuFwgSBpJLNXZabZXjHNsgfXwqqQ','OXibATKnAbXsMAeDMPtmPFCkICFYyrmBQBrySFwGMBBzWIsVtyNEwyVvAiIytsJAsTwgNc'),
+    (24, 'xelOROSCHnuBuOyLAuppFmIfVVOXyFPTQEZTqIvg','OiKaxRkAnrcAyyOhJQqXGhWZzqBdKdjzFMQFUpfvvbHtPFIWVlRzwRhHxxUBPfDlXymyqx'),
+    (9, 'xcMePHFdRuwhAEOPBbqvDTkmiZrDBCpcDGnmkryT','RhVABMSzRHfKOlVWmpCcdTonDfEugvXPRuMeSDaOFMQpdVaMJYTSCiOznqWksKbBgRYBpm'),
+    (62, 'oDAIZYSuGiSXgqLESutHcMObvrrQkwbOqwywBcsN','uPxCahwjNBxXYDyJKKyLCxjWQajYiNOZVBIBeNDQAxjvXuzvrAUxBXfMdtneNdBkGSBtdE'),
+    (1, 'pqmejetiJmJiivbeyPlwuoOhgQgfhjdwVQdWMaWh','ZuPpEgRbgXzXmjnuisTEZrsDFQBmkPAIFtNnPJErlIVXIAwzmuxypajfmkNnjeRVjRxktS'),
+    (22, 'eIzTaupAIktZaLPjANsLFzUotYbAAdlClEIVduoi','rxHQYYMqXNxioZamhQvWQFoqxczwKkCcVnKoDSfwutyIDqOeeMFeOwQbMXdhbcPIKwvAtI'),
+    (27, 'OPaYtRgfNAfvWKYgwOPXxWPeiHKfecTbYRQfqEZB','OPklyrRJLWLAqkkgWlgVoSLcvGoemrEqKNRyaGRubpglcUjMOWafeCazDUYtYRiqcnPspZ'),
+    (10, 'ilLoQXjgOGqfVlAtFrmszOSrtulQDOOZIOcxQqul','oZMWdPyFhDpLVbDBAGiJDLQjjpWRnntVkQwVYJWUAmwTdMdTaZlemBAGvYREEPooApjFFa'),
+    (35, 'LsoocSvcRnFUiPATSMFKAnSKgVbQwdujZzwkBZim','ZJngaUvCkqWDGPOyJeAYtLmHlQWckpGmFrxavHZfHoVFeCRAgOYjFjifvKmmASbeMTQuRl'),
+    (37, 'AeTADEINkHVaBdzTXsSCHdmGdnswQuKmRCoVwatT','uVbwbVdyVVgvbRwgxjqmqltMUiuiDvBcRbjTfuSnSUsPkFJgbTOsUXKXptggAlUbETalGT'),
+    (20, 'OnMKzgjbglHFyutCrmaLfOAwMFxqUzaEysKyfDdl','BQSjuaywMNOtcurqbZtcYVlwXShYSFXTBpvOXpVdoCFWGNFZGtTHTbyCKhkrWchpgoWlXM'),
+    (35, 'MRDIdlrwhjQEfsfTDxLmlySTkHvXKlilvichAGaU','kOegOcqzKkXsEhsaezLKfMvuJvxIbkttSLaPQLBowMbjeIsPISpGmYNOTXWbzDflaCMqCh'),
+    (9, 'QZvYlAdMsBWRIqztHnApKsrwojlGXiVXdeqgpftA','EycIywEGnxidRLMAVgtbOtIsWfwbEAXGiHyCmfqsbeAGkEalNPBdfHiDHPYNJHYGSkAJnw'),
+    (47, 'vEtLzCsBaYuaiROhLTjWvknStihrsHdyGDGOruHY','MDfyjOOVPoinuYiWBdCExYuGsJaIirilXpBIRXTEwodyPyzAvijOZgJBJtzMTERIksBpsA'),
+    (19, 'MTiwadSNXUOudsQoYTEgjLPYIFrKlwbCYpzRnDwI','opyxfPcOQXRSGkhrTULGrcceEsAPrYRpkSUdBWxWYUXnBbnfPkHVsmMJxMaRMsgnceASlw'),
+    (59, 'XAHMQnvRwTtVFLQXvCSCOrNFrcqvzrnWWWwRGxOC','lRNeSRvEktFgKWmXxxABYmtdDHLxeyXXFiAoVUIBBiHFjZsAyeRnmSfExYPYrCsXQZIqDO'),
+    (50, 'xFXrcTyzSsJahAOTKnzHVSqDSOeglGNXbnowZico','YUScyNEnGtGrnnQKebjGFgSTdmzWoYOSadDOGOhyLRkEjhYGeqWNaWUluyIIYLMPnvaqrV'),
+    (36, 'DDQCarqndilvJcGhHkjeowOIRkQUOSjCeUeCwfjt','JnMqPACdvXanWYLQmwYIKOCWjhVozbhemTzlujpvelggZFutHhkeIduGrvdxrQAlDSYTdr'),
+    (6, 'OCtfaFkTFpiBOLwFAaXOlTVtMWJduWUVwmLwtdaQ','FZDqTyHbwTqqsKvinrjQkXomqUyReJDOmTZuWuaJeDlFZiOAoskxVhBZOvRvlmRZxmiQhh'),
+    (43, 'XJbGSnGYJKklgSUifRDSUrZmoErgCXYNYLngBOFb','uUIkkjxckpfPgBzwIqgkuWnmmFsQKFrHvSgmOPycgfVGrkcFuVlfflyvhEqccZgdkLiugy'),
+    (29, 'URDCjtDsfhiRicixgRTFRdcvBFJxyQEJDsPGsiQT','aWEAZFSGwVNJIOGnJCraSntUnHnqDayMIlkomafRmsArJhrhJnZtQtLgytEvFbdrrWniLF'),
+    (15, 'bJNIEqRjEieHkcVFZteuoxVmACltNNiExRMqVOGd','HeoLfhGUhdvFpmumponkTRqAnzkcyMBoUxzsGADhHpAEWurVWNUKunlEZnBMiHKsSjAZQL'),
+    (33, 'pyHansGBMPYYfjVGcrOGWEERMDZNmFeucVdnjqIA','bWzdoaOJwUGRtbukjnFMQbGCQfvVhxegCqlQWjfnhkpWcVAahacWEjSYfAPpAvAeEAXJzC'),
+    (19, 'wSzdfdAyKykSWSSxpwWyTadknCXpCshdERqMyncR','ZqFdzxpbXJFyVRUGkJlUGUwadUAYGtrqcRrYuOBKtjMzYgvxKYYFMwAoYRLHBIYEaJbAAl'),
+    (39, 'jUWJqyrtMgDcxKLeJgjhyTbXgISbgIdGbHxhmqqY','AAywBHxgucDZOUoIhupZepvPMllUcAxVIlbwKhGhghiYaxtyMyvQQylQOoxMAHSgdKUWnu'),
+    (32, 'UjoszphdIHnVitMQDYMvEtXMfXJkEwsjJkBzUOlW','OUWwFXkYVruxApxHCCcngmHiHCXuwlhFPpJPNSyBtoYejYFfqPmPgGflMvBeDUQTBqhZoX'),
+    (39, 'fTiyEbdQBcPpvFJowAnsRUHruOIdktXSgRRhLEvZ','idEFsOxEssztPqvtaptjRNlktzXFGYudCCtAHxMYWgoRqgmOWosAqxOcuZzMucgqAuthQN'),
+    (36, 'RnWKXUYdhntLbwPxnkYdgImMGNKQHMEZMQhtYAWt','WIlmuTtFRfJRKRJYhISVGcTuxkTVHtCxcUiLSmWjugcYmTslVUmSPtTygMPyhGboNxdlhP')
+;
 
 insert into afterlife
 	(person_id,case_id, address,  occupation, afterlife_start_date, biography)
