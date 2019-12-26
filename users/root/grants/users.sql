@@ -47,6 +47,7 @@ GRANT SELECT ON ALLIDB.spyorg TO spy_manager;
 GRANT SELECT ON ALLIDB.person TO spy_manager;
 GRANT EXECUTE ON ALLIDB.view_person_by_id TO spy_manager;
 GRANT EXECUTE ON ALLIDB.view_person_by_name TO spy_manager;
+GRANT EXECUTE ON ALLIDB.spy_actions TO spy_manager;
 
 
 CREATE USER person_manager IDENTIFIED BY 'sm_password';
