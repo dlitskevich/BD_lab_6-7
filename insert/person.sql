@@ -3,7 +3,7 @@ use alliDB;
 insert into alliDB.person
 	(person_name,person_surname,address,birth,gender,biography,death)
 values
-	('Edith','Ivanov', 'Moscow Pobeda', '1932-10-27', 'male','zjSQLhyXpYGXujsHQWnHSMqujGPBhXuFDDKySshcxBSkyJmmGFTARXrOFaZmgXnmmQNIZywznMKyQBFBDueNVGSQhNaoqCchftwFOUxxXllXNjyCWILXSVHRjmRXsVchUWScSeFxjYmQCjoOf','1963-10-14'),
+	('Edith','Ivanov', 'Moscow Pobeda', '1932-10-27', 'male','zjSQLhyXpYGXujsHQWnHSMqujGPBhXuFDDKySshcxBSkyJmmGFTARXrOFaZmgXnmmQNIZywznMKyQBFBDueNVGSQhNaoqCchftwFOUxxXllXNjyCWILXSVHRjmRXsVchUWScSeFxjYmQCjoOf',null),
 	('Deborah','Ivanova', 'Moscow Pobeda', '1933-11-25', 'female','DkAsinUSrgMBowbwiSuSjUKmULPKqrsJFagRfZiAHaTveoROIKQGIHbwYdcmQNinSGLOEUmuajmzTWHlCEFvGAYczzzvTtsghodFhHaqCLRShcIIZUIVREDAXKjYDBxqLluadApBoYSpeRorD','2006-10-14'), 
 	('Brenda','Ivanova', 'Moscow Pobeda', '1952-10-16', 'female','ROVewFCcrBMlVxPVHqkKLqTUESKDHUeABMMmQBoZthtMhRUPfJhKCMwHpMIJMVYkrFPJGlLwtPMzviVKdBtBsoKgXWDqFcoLblVLFSxfllfrqkcOHwRmuBwNuWYwoXmcJzdcxpumlltuCmXqU',null), 
 	('Ivan','Ivanov', 'Moscow Pobeda', '1955-10-19', 'male','MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY',null), 
@@ -50,14 +50,19 @@ insert into cases
 	(person_id, article_id, start_date, end_date, authority, sentence_id, times)
 values
 	(1, 1, '1962-10-16', '1963-10-13', 'SMT', -1, 123),
-    (2, 8, '1962-10-16', '1963-10-13', 'SMT', 7, 123) -- change
+    (2, 8, '1962-10-16', '1963-10-13', 'SMT', 6, 123),
+    (6, 1, '1962-10-16', '1963-10-13', 'SMT', -1, 123),
+    (7, 8, '1962-10-16', '1963-10-13', 'SMT', -1, 123),
+    (8, 1, '1962-10-16', '1963-10-13', 'SMT', 3, 123),
+    (9, 1, '1962-10-16', '1963-10-13', 'SMT', 5, 123),
+    (10, 8, '1962-10-16', '1963-10-13', 'SMT', 5, 123)
 ;
 
 insert into cases
 	(person_id, article_id, start_date, end_date, authority, sentence_id, times)
 values
-	(6, 1, '1962-10-16', '1963-10-13', 'SMT', -1, 123),
-    (7, 1, '1962-10-16', '1963-10-13', 'SMT', 3, 123),
+	(11, 1, '1962-10-16', '1963-10-13', 'SMT', -1, 123),
+    (0, 1, '1962-10-16', '1963-10-13', 'SMT', 3, 123),
     (8, 1, '1962-10-16', '1963-10-13', 'SMT', 3, 123),
     (9, 1, '1962-10-16', '1963-10-13', 'SMT', -1, 123),
     (10, 1, '1962-10-16', '1963-10-13', 'SMT', -1, 123)
@@ -66,14 +71,18 @@ values
 insert into case_info
 	(info_description, case_id, info_content)
 values
-	('evidence1',1,'witness')
+	('evidence1',1,'witness'),
+    ('evidence2',6,'witness information'),
+    ('evidence3',7,'witness information')
 ;
 
 
 insert into shot
 	(case_id, shot_date)
 values
-	(1, '1963-10-17')
+	(1, '1963-10-17'),
+    (3, '1963-10-17'),
+    (4, '1963-10-17')
 ;
 insert into shot
 	(case_id, shot_date)
@@ -81,12 +90,27 @@ values
 	(13, '1962-10-17')
 ;
 
+call prisoner_arrival(1, 5, '1963-10-17');
+call prisoner_arrival(2, 6, '1963-10-18');
+call prisoner_arrival(3, 7, '1963-10-18');
+
+call prisoner_transfer(1,4, 5, '1967-10-17');
+
+call prisoner_release(4, 5, '1978-10-17');
+call prisoner_release(2, 6, '1983-10-18');
+call prisoner_release(3, 7, '1983-10-18');
+
+
 insert into afterlife
 	(person_id,case_id, address,  occupation, afterlife_start_date, biography)
 values
-	(2, 1, 'Novosibirsk', 'nurse', '1962-10-18', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
-    (3, 1, 'Novosibirsk', null, '1962-10-18', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
-    (4, 1, 'Novosibirsk', null, '1962-10-18', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
-    (5, 1, 'Novosibirsk', null, '1962-10-18', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY')
+    (2, 1, 'Novosibirsk', 'nurse', '1963-10-18', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
+    (3, 1, 'Novosibirsk', null, '1963-10-18', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
+    (4, 1, 'Novosibirsk', null, '1963-10-18', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
+    (5, 1, 'Novosibirsk', null, '1963-10-18', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
+    (8, 5, 'Tomsk', 'nurse', '1983-10-18', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
+    (9, 6, 'Tomsk', null, '1983-10-18', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
+    (10, 7, 'Tomsk', null, '1983-10-18', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY')
     
 ;
+

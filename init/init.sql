@@ -161,7 +161,7 @@ CREATE TABLE sentence
 insert into sentence
 	(sentence_id,sentence_text)
 values
-	 (-1, 'innocent'),
+	 (-1, 'shot'),
 	 (0, 'innocent')
 ;
 SET FOREIGN_KEY_CHECKS = 1; 
@@ -169,8 +169,8 @@ SET FOREIGN_KEY_CHECKS = 1;
 CREATE TABLE cases
 (
 	case_id INT PRIMARY KEY AUTO_INCREMENT,
-    person_id INT,
-    article_id INT,
+    person_id INT not null,
+    article_id INT not null,
     start_date DATE not null,
     end_date DATE,
     authority VARCHAR(45),
@@ -340,27 +340,37 @@ create table transfer(
     constraint fk_transfer_placeD_current foreign key (placeD_current) references placeD(placeD_id)
 );
 
+-- drop trigger transfer_insert;
 DELIMITER //
 create trigger transfer_insert before insert on transfer
 for each row
 begin
-	declare death_date date;
+	declare death_date, case_start_date date;
     declare cur_person_id int;
     declare released bool default 0;
+    declare cur_sentence int default null; 
     
     select person_id into cur_person_id from cases
     where case_id = new.case_id
     ;
-    select death into death_date from person
+    select cast(aes_decrypt(death,'death')as date) into death_date from person
     where person_id = cur_person_id
     ;
     select count(*) into released from transfer
     where case_id = new.case_id and transfer_action='release'
     ;
+    select sentence_id, start_date into cur_sentence, case_start_date from cases
+    where case_id = new.case_id
+    ;
     
-	if transfer_action='transfer' and new.placeD_prev=new.placeD_current then
+	if new.transfer_action='transfer' and new.placeD_prev=new.placeD_current then
 		signal sqlstate '45000'
 		SET MESSAGE_TEXT = 'Not allowed transfer to the same place (trigger)...';
+	end if
+    ;
+    if new.transfer_date<case_start_date then
+		signal sqlstate '45000'
+		SET MESSAGE_TEXT = 'Not allowed transfer without case earlier (trigger)...';
 	end if
     ;
     if new.transfer_date>death_date then
@@ -371,6 +381,11 @@ begin
     if released>0 then
 		signal sqlstate '45000'
 		SET MESSAGE_TEXT = 'Not allowed transfer of free person (trigger)...';
+	end if
+    ;
+    if cur_sentence=0 then
+		signal sqlstate '45000'
+		SET MESSAGE_TEXT = 'Not allowed transfer of innocent person (trigger)...';
 	end if
     ;
 end //
@@ -453,6 +468,7 @@ BEGIN
 	END IF;
 END;;
 
+-- drop trigger shot_sentence;;
 CREATE TRIGGER shot_sentence BEFORE INSERT ON shot
 FOR EACH ROW
 BEGIN
@@ -463,7 +479,7 @@ BEGIN
     
     IF curr_sentence <> -1 THEN
 		SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'An error occurred: person cannot be shot (trigger)';
+        SET MESSAGE_TEXT = 'An error occurred: person cannot be shot by not mortal sentence (trigger)';
 	END IF;
 END;;
 
@@ -486,7 +502,7 @@ BEGIN
     
     IF NEW.shot_date > death_date THEN
 		SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'An error occurred: person cannot be shot (trigger)';
+        SET MESSAGE_TEXT = 'An error occurred : person cannot be shot (trigger)';
 	END IF;
     
     IF NEW.shot_date < case_end THEN
@@ -525,15 +541,24 @@ CREATE TRIGGER afterlife_check BEFORE INSERT ON afterlife
 FOR EACH ROW
 BEGIN
 	DECLARE prev_times INT DEFAULT 0;
-    DECLARE case_end DATE;
+    DECLARE case_end, release_date DATE default null;
     DECLARE person_death DATE default(curdate());
     DECLARE curr_person INT;
     
     SELECT end_date, person_id INTO case_end, curr_person FROM cases
     WHERE case_id = NEW.case_id;
     
+    select transfer_date into release_date from transfer
+    where case_id = new.case_id and transfer_action='release'
+    ;
+    
     SELECT cast(aes_decrypt(death, 'death')as date) INTO person_death FROM person
     WHERE person_id = NEW.person_id;
+    
+    IF NEW.afterlife_start_date < release_date THEN
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'An error occurred: incorrect start_date too early.';
+	END IF;
     
 	IF NOT NEW.afterlife_start_date BETWEEN case_end AND person_death THEN
 		SIGNAL SQLSTATE '45000'
@@ -541,7 +566,7 @@ BEGIN
 	END IF;
     
     IF NEW.person_id <> curr_person AND (SELECT COUNT(criminal_id)
-									  FROM criminal_reative
+									  FROM criminal_relative
                                       WHERE criminal_id = curr_person AND relative_id = NEW.person_id) <> 1
 		THEN
 			SIGNAL SQLSTATE '45000'
@@ -553,15 +578,24 @@ CREATE TRIGGER afterlife_update BEFORE update ON afterlife
 FOR EACH ROW
 BEGIN
 	DECLARE prev_times INT DEFAULT 0;
-    DECLARE case_end DATE;
+    DECLARE case_end, release_date DATE default null;
     DECLARE person_death DATE default(curdate());
     DECLARE curr_person INT;
     
     SELECT end_date, person_id INTO case_end, curr_person FROM cases
     WHERE case_id = NEW.case_id;
     
+    select transfer_date into release_date from transfer
+    where case_id = new.case_id and transfer_action='release'
+    ;
+    
     SELECT cast(aes_decrypt(death, 'death')as date) INTO person_death FROM person
     WHERE person_id = NEW.person_id;
+    
+    IF NEW.afterlife_start_date < release_date THEN
+		SIGNAL SQLSTATE '45000'
+		SET MESSAGE_TEXT = 'An error occurred: incorrect start_date too early.';
+	END IF;
     
 	IF NOT NEW.afterlife_start_date BETWEEN case_end AND person_death THEN
 		SIGNAL SQLSTATE '45000'
@@ -569,12 +603,12 @@ BEGIN
 	END IF;
     
     IF NEW.person_id <> curr_person AND (SELECT COUNT(criminal_id)
-									  FROM criminal_reative
+									  FROM criminal_relative
                                       WHERE criminal_id = curr_person AND relative_id = NEW.person_id) <> 1
 		THEN
 			SIGNAL SQLSTATE '45000'
 			SET MESSAGE_TEXT = 'An error occurred: person and criminal are not relatives.';
-	END IF;     
+	END IF;      
 END;;
 DELIMITER ;
 
@@ -588,7 +622,7 @@ CREATE TABLE spyorg(
 CREATE TABLE person_spyorg(
 	episode_id INT PRIMARY KEY AUTO_INCREMENT,
     person_id INT not null,
-    spyorg_id INT,
+    spyorg_id INT not null,
     episode_date DATE not null,
     -- episode_action TEXT,
     standing ENUM('spotted', 'suspected') not null,
@@ -680,7 +714,7 @@ DELIMITER ;
 
 CREATE TABLE compromat(
 	compromat_id INT PRIMARY KEY AUTO_INCREMENT,
-    person_id INT,
+    person_id INT not null,
     importance DOUBLE default null,
     compromat_description blob not null,
     compromat_content BLOB,
@@ -692,7 +726,7 @@ CREATE TRIGGER compromat_importance_eval BEFORE INSERT ON compromat
 FOR EACH ROW
 BEGIN
 	if NEW.importance is null then
-		SET NEW.importance = compromat_importance(cast(aes_decrypt(new.compromat_description, "compromat_description") as char)); 
+		SET NEW.importance = compromat_importance(new.compromat_description); 
 	end if;
 END;;
 DELIMITER ;

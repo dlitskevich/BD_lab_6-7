@@ -7,6 +7,8 @@ TRUNCATE table person;
 TRUNCATE table shot;
 TRUNCATE table sentence;
 TRUNCATE table politics;
+TRUNCATE table cases;
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 
@@ -37,6 +39,11 @@ select * from rehabilitation;
 
 select * from shot;
 select * from placeD;
+select placeD_id,
+	   placeD_name,
+       cast(aes_decrypt(location,'location')as char),
+       placeD_type from placeD;
+       
 select* from transfer;
 
 select * from spyorg;
