@@ -128,7 +128,7 @@ BEGIN
 		INSERT INTO spy_ep_info
 		(info_description, spy_ep_id, info_content)
 		VALUES
-		(CONV(FLOOR(RAND() * 99999999999999), 30, 36), FLOOR(RAND()*40+1), CONV(FLOOR(RAND() * 99999999999999), 15, 36));
+		(CONV(FLOOR(RAND() * 99999999999999), 30, 36), FLOOR(RAND()*23+1), CONV(FLOOR(RAND() * 99999999999999), 15, 36));
         IF i > 20 THEN
 			LEAVE insert_loop;
 		END IF;
