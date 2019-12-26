@@ -154,15 +154,17 @@ CREATE TABLE article
 
 CREATE TABLE sentence
 (
-	sentence_id INT PRIMARY KEY AUTO_INCREMENT,
+	sentence_id INT PRIMARY KEY,
     sentence_text TEXT not null
 );
+
 insert into sentence
 	(sentence_id,sentence_text)
 values
-	(-1, 'shot'),
-    (0, 'innocent')
+	 (-1, 'innocent'),
+	 (0, 'innocent')
 ;
+SET FOREIGN_KEY_CHECKS = 1; 
 
 CREATE TABLE cases
 (

@@ -7,7 +7,23 @@ values
 	('Deborah','Ivanova', 'Moscow Pobeda', '1933-11-25', 'female','DkAsinUSrgMBowbwiSuSjUKmULPKqrsJFagRfZiAHaTveoROIKQGIHbwYdcmQNinSGLOEUmuajmzTWHlCEFvGAYczzzvTtsghodFhHaqCLRShcIIZUIVREDAXKjYDBxqLluadApBoYSpeRorD','2006-10-14'), 
 	('Brenda','Ivanova', 'Moscow Pobeda', '1952-10-16', 'female','ROVewFCcrBMlVxPVHqkKLqTUESKDHUeABMMmQBoZthtMhRUPfJhKCMwHpMIJMVYkrFPJGlLwtPMzviVKdBtBsoKgXWDqFcoLblVLFSxfllfrqkcOHwRmuBwNuWYwoXmcJzdcxpumlltuCmXqU',null), 
 	('Ivan','Ivanov', 'Moscow Pobeda', '1955-10-19', 'male','MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY',null), 
-	('Craig','Ivanov', 'Moscow Pobeda', '1957-12-28', 'male','arCAitZtcEJVigIDRemMYyRcxZvBSpOHXqoDAynBpTcWhlIulUmTcjPeAMtvxwWbbSvXKnctalXDmrJEwiZEGoWhedHpbePQxqHmWfAtDItHqozdWcRJooCcSOfbeRATPQxmyQbFDsrYqYkTX',null) 
+	('Craig','Ivanov', 'Moscow Pobeda', '1957-12-28', 'male','arCAitZtcEJVigIDRemMYyRcxZvBSpOHXqoDAynBpTcWhlIulUmTcjPeAMtvxwWbbSvXKnctalXDmrJEwiZEGoWhedHpbePQxqHmWfAtDItHqozdWcRJooCcSOfbeRATPQxmyQbFDsrYqYkTX',null),
+    
+    ('Alice','Petrova', 'Moscow Soviet', '1939-07-19', 'female','ynbuRYSuJVKnwLSOrQrvjRqIljQHMwUyggcXJyVkbKTnuNZszjHtuHnRkkWMtWyhThuJnvynNCuWnhPtJTFBWbPFXrFhSjjZBTHDvCmYcUXeVuOvwgNuPAmROIXnEtWpDsqEKEszicASCavtr','2006-02-22'), 
+	('James','Petrov', 'Moscow October', '1938-04-18', 'male','iNVKktJvdcFaKkOSjvFtziVGOWFbYrtAcdGDvgJCkbwvtGQgiXDzexyCaWFytzJYfSoNUfnLzAYjqnsPigvCpHOjZaEpKCEwsbIyKKWfHlNVRAzrdaWeDUOSdDoZwixJPKaKgCtEmMJIAjAJR','2006-07-10'), 
+	('Michael','Petrov', 'Moscow October', '1938-09-20', 'male','vYVkyUyvMTxvOXnGwscURBhFlflpvnuTUsVySHdctSoxdIJYwkxGQhvqqdfXPLZJHfMPuGVXRoHpmwWtjuYaTOcMqZloncUUYjEvhkmrwNBgMjqjRpERRlDsuYrgrmvcBolUhnqPQJnSSeZOK','2006-06-21'), 
+	('Amanda','Petrova', 'Moscow Soviet', '1935-09-24', 'male','XTMcQQlLkgZtwWOHcCNcXihFjuiMPZSeeSaqRLwnTVyBXwjzxBOXAZWcUVpDHjTLaXZmfNUdshXyslnYhqxhoQSbXLkGRgQigChbmkBzPAwyCZAsXenmrNgvGLrtqAJDzepGjFLFtPEfqxdJs','2006-02-21'), 
+	('Elizabeth','Petrova', 'Moscow October', '1936-09-27', 'male','dqHqofbqffNCnXdUtuRJEocOndYfSGZXwQlHvZNODVMSDaxcOQHDPABNXEByglrlHTrDLCnjipeoRaMVlLHbbUEgibGOeSckOHuBBotGrzVMSNpiMZytquHlCZYvWfqGXhygcqUDOPhUtxdNZ','2006-02-26') 
+	
+;
+insert into alliDB.person
+	(person_name,person_surname,address,birth,gender,biography,death)
+values
+	('Estelle','Smith', 'Moscow Pobeda', '1937-12-20', 'female','AtZdVNXAjhRcPimRXGkPLsWwyjzOVPJsCLjjvRVqErmfrHVtPJIdJgsRhUJBGjvfkgvuQRuVaisaJFEJEsdTqQpZnpGnbdXyVaeEJjABBzrEmwdpUWNzngxIFLYKjLXKMsfwOVjrEeLnkKeLt','2006-11-28'), 
+	('Joe','Stephenson', 'Moscow October', '1936-10-17', 'male','yBANHTpzoJISGJFcmJtKqHdbSBmgoqVybAbTIYdxrlxawWYIXCZDqTaOGafFwMBjvkJdnzcXHxWuEFDPcUcpLxTqMIBFaPoYvmbHQopjDpQpZQNmxnDBVMpUwlZqhXsaGeLQHogDNZSjXZTMP','2006-12-27'), 
+	('Ida','Czajkowski', 'Moscow October', '1930-10-27', 'female','TPzGpDQRqbMEpWyVwFgiLWvXFdrCKQLdkxikXtedZtlOAqZiHssVkIrtOJeUCyFBxaTZNkkOBWKKvCuNWstgblFGVQgeIabkIRnAxTXgIdcEgbEYGnaFIHGGsAOzxTWyqxsykSsLbaMhspMSU','2006-12-12'), 
+	('Marty','Wolfe', 'Moscow October', '1930-12-25', 'male','LeagiySKJCzZoqzmGDlfdKNqkVoyrHQfLNrmAhaPIfKiedhmqIBXRoAMDfgCrykaCYiHWMyzNFunFitcFtSFHoLsKkhYcBVffiMbFtzHNDhXmpSWAnrTpjZNDxElNRDomFBpkoCDJyIGXxECK','2006-12-16'), 
+	('Patricia','Robinson', 'Moscow Soviet', '1939-10-27', 'female','MJtkVUgAOBNvagOYrXxSDWrpOfykqHeeoRBlpEHpjhnEpSSwVuKQsDDAxKLcARtwMEeGzEzmcMXTSWpiKhBAMJPGUbGWBvrIkMJLnpSHeDaAWEGLELhjYgUXBFdSbEjuhlVkRKngJinCgVlee','2006-12-19')
 	
 ;
 
@@ -17,7 +33,17 @@ values
 	(1,2, 'spouse'),
     (1,3, 'child'),
     (1,4, 'child'),
-    (1,5, 'child')
+    (1,5, 'child'),
+    
+    (6,7, 'spouse'),
+    (6,8, 'distant'),
+    (6,9, 'distant'),
+    (6,10, 'distant'),
+    
+    (7,6, 'spouse'),
+    (7,8, 'distant'),
+    (7,9, 'distant'),
+    (7,10, 'distant')
 ;
 
 insert into cases
@@ -25,6 +51,16 @@ insert into cases
 values
 	(1, 1, '1962-10-16', '1963-10-13', 'SMT', -1, 123),
     (2, 8, '1962-10-16', '1963-10-13', 'SMT', 7, 123) -- change
+;
+
+insert into cases
+	(person_id, article_id, start_date, end_date, authority, sentence_id, times)
+values
+	(6, 1, '1962-10-16', '1963-10-13', 'SMT', -1, 123),
+    (7, 1, '1962-10-16', '1963-10-13', 'SMT', 3, 123),
+    (8, 1, '1962-10-16', '1963-10-13', 'SMT', 3, 123),
+    (9, 1, '1962-10-16', '1963-10-13', 'SMT', -1, 123),
+    (10, 1, '1962-10-16', '1963-10-13', 'SMT', -1, 123)
 ;
 
 insert into case_info
@@ -37,15 +73,20 @@ values
 insert into shot
 	(case_id, shot_date)
 values
-	(1, '1962-10-17')
+	(1, '1963-10-17')
+;
+insert into shot
+	(case_id, shot_date)
+values
+	(13, '1962-10-17')
 ;
 
 insert into afterlife
 	(person_id,case_id, address,  occupation, afterlife_start_date, biography)
 values
-	(2, 1, 'Novosibirsk', 'nurse', '1862-11-17', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
-    (3, 1, 'Novosibirsk', null, '1862-11-17', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
-    (4, 1, 'Novosibirsk', null, '1862-11-17', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
-    (5, 1, 'Novosibirsk', null, '1862-11-17', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY')
+	(2, 1, 'Novosibirsk', 'nurse', '1962-10-18', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
+    (3, 1, 'Novosibirsk', null, '1962-10-18', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
+    (4, 1, 'Novosibirsk', null, '1962-10-18', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY'),
+    (5, 1, 'Novosibirsk', null, '1962-10-18', 'MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY')
     
 ;

@@ -17,14 +17,14 @@ VALUES
 ('United States OSS', 'United States');
 
 INSERT INTO sentence
-(sentence_text)
+(sentence_id,sentence_text)
 VALUES
-('5 years of imprisonment'),
-('10 years of imprisonment'),
-('15 years of imprisonment'),
-('20 years of imprisonment'),
-('life imprisonment'),
-('Exiling');
+(1,'5 years of imprisonment'),
+(2,'10 years of imprisonment'),
+(3,'15 years of imprisonment'),
+(4,'20 years of imprisonment'),
+(5,'life imprisonment'),
+(6,'Exiling');
 
 INSERT INTO article
 (article_number, article_name, article_text)
