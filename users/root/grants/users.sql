@@ -50,7 +50,7 @@ GRANT EXECUTE ON ALLIDB.view_person_by_name TO spy_manager;
 GRANT EXECUTE ON ALLIDB.spy_actions TO spy_manager;
 
 
-CREATE USER person_manager IDENTIFIED BY 'sm_password';
+CREATE USER person_manager IDENTIFIED BY 'pm_password';
 GRANT SELECT, INSERT, UPDATE ON ALLIDB.person TO person_manager;
 GRANT SELECT, INSERT, UPDATE ON ALLIDB.politics TO person_manager;
 GRANT SELECT, INSERT, UPDATE ON ALLIDB.criminal_relative TO person_manager;
@@ -66,3 +66,6 @@ GRANT EXECUTE ON ALLIDB.view_compromat TO person_manager;
 GRANT EXECUTE ON ALLIDB.view_person_by_id TO person_manager;
 GRANT EXECUTE ON ALLIDB.view_person_by_name TO person_manager;
 GRANT EXECUTE ON ALLIDB.view_relatives TO person_manager;
+
+CREATE USER relative IDENTIFIED BY 'rel_password';
+GRANT EXECUTE ON ALLIDB.view_person_by_name TO relative;
