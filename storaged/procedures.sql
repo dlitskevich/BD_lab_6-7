@@ -14,7 +14,6 @@ BEGIN
     COMMIT;
 END;;
 
-
 CREATE PROCEDURE prisoner_transfer(IN from_place INT, IN to_place INT, IN person_case INT, IN transf_date DATE)
 BEGIN
 	START TRANSACTION;
@@ -119,17 +118,18 @@ BEGIN
     WHERE person_id = curr_id;
 END;;
 
-CREATE PROCEDURE view_person_by_name(IN curr_name VARCHAR(45), IN curr_surname VARCHAR(45))
+CREATE PROCEDURE view_person_by_name(IN name_pattern VARCHAR(45), IN surname_pattern VARCHAR(45))
 BEGIN
-	SELECT curr_name AS person_name,
-		   curr_surname AS person_surname,
-           CAST(AES_DECRYPT(person_address, 'address') AS CHAR) AS person_address,
+	SELECT * FROM
+    (SELECT CAST(AES_DECRYPT(person_name, 'name') AS CHAR) AS person_name,
+		   CAST(AES_DECRYPT(person_surname, 'surname') AS CHAR) AS person_surname,
+           CAST(AES_DECRYPT(address, 'address') AS CHAR) AS person_address,
            CAST(AES_DECRYPT(birth, 'birth') AS DATE) AS birthdate,
            CAST(AES_DECRYPT(death, 'death') AS DATE) AS deathdate,
            CAST(AES_DECRYPT(biography, 'biography') AS CHAR) AS biography,
            gender
-    FROM person
-    WHERE AES_ENCRYPT(curr_name, 'name') = person_name AND AES_ENCRYPT(curr_surname, 'surname') = person_surname;
+    FROM person) AS decrypted
+    WHERE decrypted.person_name LIKE name_pattern AND decrypted.person_surname LIKE surname_pattern;
 END;;
 
 CREATE PROCEDURE view_compromat (IN curr_person INT)
@@ -164,6 +164,22 @@ BEGIN
     (person_id, article_id, start_id, end_id, authority, sentence_id)
     VALUES
     (curr_person, curr_article, curr_start, curr_end, curr_authority, curr_sentence);
+END;;
+
+CREATE PROCEDURE view_person_afterlife(IN name_pattern VARCHAR(45), IN surname_pattern VARCHAR(45))
+BEGIN
+	SELECT decrypted.person_name AS person_name,
+		   decrypted.person_surname AS person_surname,
+           afterlife.address AS address,
+           afterlife.occupation AS occupation,
+           afterlife.biography AS bio,
+           afterlife.afterlife_start_date AS start_date
+	FROM afterlife
+    NATURAL JOIN (SELECT CAST(AES_DECRYPT(person_name, 'name') AS CHAR) AS person_name,
+						 CAST(AES_DECRYPT(person_surname, 'surname') AS CHAR) AS person_surname,
+						 person_id
+				  FROM person) AS decrypted
+	WHERE person_name LIKE name_pattern AND person_surname LIKE surname_pattern;           
 END;;
 
 DELIMITER ;
