@@ -3,6 +3,7 @@ drop database ALLIDB;
 
 SET FOREIGN_KEY_CHECKS = 0; 
 
+truncate table criminal_relative;
 TRUNCATE table person;
 TRUNCATE table shot;
 TRUNCATE table sentence;

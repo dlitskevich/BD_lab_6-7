@@ -636,7 +636,7 @@ FOR EACH ROW
 BEGIN
   DECLARE death_date DATE DEFAULT NULL;
     
-    SELECT death INTO death_date FROM person
+    SELECT cast(aes_decrypt(death, 'death')as date) INTO death_date FROM person
     WHERE person_id = NEW.person_id;
     
   IF NEW.episode_date > death_date THEN
