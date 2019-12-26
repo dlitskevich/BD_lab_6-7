@@ -163,12 +163,6 @@ values
 	(-1, 'shot'),
     (0, 'innocent')
 ;
-insert into sentence
-	(sentence_text)
-values
-	('imprisonment for 15 years'),
-    ('15 years of jail')
-;
 
 CREATE TABLE cases
 (

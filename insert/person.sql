@@ -6,7 +6,7 @@ values
 	('Edith','Ivanov', 'Moscow Pobeda', '1932-10-27', 'male','zjSQLhyXpYGXujsHQWnHSMqujGPBhXuFDDKySshcxBSkyJmmGFTARXrOFaZmgXnmmQNIZywznMKyQBFBDueNVGSQhNaoqCchftwFOUxxXllXNjyCWILXSVHRjmRXsVchUWScSeFxjYmQCjoOf','1963-10-14'),
 	('Deborah','Ivanova', 'Moscow Pobeda', '1933-11-25', 'female','DkAsinUSrgMBowbwiSuSjUKmULPKqrsJFagRfZiAHaTveoROIKQGIHbwYdcmQNinSGLOEUmuajmzTWHlCEFvGAYczzzvTtsghodFhHaqCLRShcIIZUIVREDAXKjYDBxqLluadApBoYSpeRorD','2006-10-14'), 
 	('Brenda','Ivanova', 'Moscow Pobeda', '1952-10-16', 'female','ROVewFCcrBMlVxPVHqkKLqTUESKDHUeABMMmQBoZthtMhRUPfJhKCMwHpMIJMVYkrFPJGlLwtPMzviVKdBtBsoKgXWDqFcoLblVLFSxfllfrqkcOHwRmuBwNuWYwoXmcJzdcxpumlltuCmXqU',null), 
-	('Yvonne','Ivanov', 'Moscow Pobeda', '1955-10-19', 'male','MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY',null), 
+	('Ivan','Ivanov', 'Moscow Pobeda', '1955-10-19', 'male','MsaWRBjPnCFNVkRmYLmexnhjsvrDhrVQHqBeRDKbFAEjfMXSsxUeacXJyNLInTsLXjcWwZqzTGGaZgUhcXeWMuDFnqWMOKBzilzECZPsTgyEFiWoEUkeZyAEmwMpfQvsIkKIljhpwdNsNYQvY',null), 
 	('Craig','Ivanov', 'Moscow Pobeda', '1957-12-28', 'male','arCAitZtcEJVigIDRemMYyRcxZvBSpOHXqoDAynBpTcWhlIulUmTcjPeAMtvxwWbbSvXKnctalXDmrJEwiZEGoWhedHpbePQxqHmWfAtDItHqozdWcRJooCcSOfbeRATPQxmyQbFDsrYqYkTX',null) 
 	
 ;
@@ -24,7 +24,7 @@ insert into cases
 	(person_id, article_id, start_date, end_date, authority, sentence_id, times)
 values
 	(1, 1, '1962-10-16', '1963-10-13', 'SMT', -1, 123),
-    (2, 8, '1962-10-16', '1963-10-13', 'SMT', 9, 123)
+    (2, 8, '1962-10-16', '1963-10-13', 'SMT', 7, 123) -- change
 ;
 
 insert into case_info

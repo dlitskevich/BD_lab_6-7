@@ -21,6 +21,7 @@ VALUES
 ('10 years of imprisonment'),
 ('15 years of imprisonment'),
 ('20 years of imprisonment'),
+('life imprisonment'),
 ('Exiling');
 
 INSERT INTO article

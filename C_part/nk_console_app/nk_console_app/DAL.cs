@@ -53,7 +53,7 @@ namespace nk_console_app {
 		private static void DisplayTable(DataTable dt) {
 
 			for (int curCol = 0; curCol < dt.Columns.Count; curCol++) {
-				Console.Write("{0,-15}", dt.Columns[curCol].ColumnName);
+				Console.Write("{0,-25}", dt.Columns[curCol].ColumnName);
 			}
 			Console.WriteLine("\n  ");
 
