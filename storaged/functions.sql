@@ -9,6 +9,37 @@ END//
 
 DELIMITER ;;
 
+DELIMITER //
+CREATE FUNCTION was_repressed(person int)
+RETURNS bool
+BEGIN
+	declare repressed bool default 0;
+    
+    select count(*) into repressed from cases
+    natural join rehabilitation
+    where person_id=person
+    ;
+    RETURN repressed; 
+END//
+
+-- drop function whos_case//
+DELIMITER //
+CREATE FUNCTION whos_case(cur_case int)
+RETURNS int
+BEGIN
+	declare whos int default null;
+    
+    select person_id into whos from cases
+    where case_id=cur_case
+    ;
+    RETURN whos; 
+END//
+
+-- select whos_case(4)//
+
+
+DELIMITER ;;
+
 CREATE FUNCTION rehabilitated_cases()
 RETURNS DOUBLE
 BEGIN
@@ -24,7 +55,6 @@ BEGIN
     RETURN percent;
 END;;
 
-select rehabilitated_cases();
 
 CREATE FUNCTION rehabilitated_people()
 RETURNS DOUBLE
