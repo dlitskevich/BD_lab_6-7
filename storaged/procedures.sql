@@ -105,16 +105,26 @@ BEGIN
     WHERE person_spyorg.person_id = spy;
 END;;
 
+DROP PROCEDURE view_person_by_id;;
 CREATE PROCEDURE view_person_by_id (IN curr_id INT)
 BEGIN
 	SELECT CAST(AES_DECRYPT(person_name, 'name') AS CHAR) AS person_name,
 		   CAST(AES_DECRYPT(person_surname, 'surname') AS CHAR) AS person_surname,
-           CAST(AES_DECRYPT(person_address, 'address') AS CHAR) AS person_address,
+           CAST(AES_DECRYPT(address, 'address') AS CHAR) AS person_address,
            CAST(AES_DECRYPT(birth, 'birth') AS DATE) AS birthdate,
            CAST(AES_DECRYPT(death, 'death') AS DATE) AS deathdate,
            CAST(AES_DECRYPT(biography, 'biography') AS CHAR) AS biography,
-           gender
+           gender,
+           article_text,
+           start_date,
+           sentence_text,
+           party_name
     FROM person
+	NATURAL JOIN cases
+    NATURAL JOIN article
+    NATURAL JOIN sentence
+    NATURAL JOIN politics
+    NATURAL JOIN party
     WHERE person_id = curr_id;
 END;;
 
