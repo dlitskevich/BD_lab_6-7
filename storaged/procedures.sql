@@ -197,4 +197,17 @@ BEGIN
 	WHERE person_name LIKE name_pattern AND person_surname LIKE surname_pattern;           
 END;;
 
+drop procedure get_compromat;;
+CREATE PROCEDURE get_compromat(IN curr_person INT)
+BEGIN
+	SELECT importance,
+		   CAST(AES_DECRYPT(compromat_description, 'compromat_description') AS CHAR) AS compromat_description,
+           AES_DECRYPT(compromat_content, 'compromat') AS compromat_content
+	FROM compromat
+    WHERE person_id = curr_person
+    ORDER BY importance DESC;
+END;;
+
 DELIMITER ;
+
+call get_compromat(9);
