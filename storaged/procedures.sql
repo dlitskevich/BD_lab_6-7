@@ -52,12 +52,11 @@ END;;
 
 CREATE PROCEDURE view_cases(IN curr_person INT)
 BEGIN
-	SELECT cases.case_id, cases.person_id, cases.article_id,
-			cases.start_date, cases.end_date, cases.authority, 
-            sentence.sentence_text, cases.times
+	SELECT case_id, person_id, article_id,
+			start_date, end_date, authority, 
+            sentence_id, times
 	FROM cases
-    INNER JOIN sentence ON sentence.sentence_id = cases.sentence_id
-    WHERE cases.person_id = curr_person;
+    WHERE person_id = curr_person;
 END;;
 
 CREATE PROCEDURE view_afterlife (IN curr_person INT)
