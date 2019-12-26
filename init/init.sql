@@ -594,6 +594,30 @@ CREATE TABLE person_spyorg(
     CONSTRAINT fk_episode_spyorg FOREIGN KEY (spyorg_id) REFERENCES spyorg (spyorg_id)
 );
 
+DELIMITER ;;
+CREATE TRIGGER person_spyorg_check BEFORE INSERT ON person_spyorg
+FOR EACH ROW
+BEGIN
+  DECLARE death_date DATE DEFAULT NULL;
+    
+    SELECT death INTO death_date FROM person
+    WHERE person_id = NEW.person_id;
+    
+  IF NEW.episode_date > death_date THEN
+    SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'An error occurred: action cannot take place after person\'s date. (trigger)';
+  END IF;
+END;;
+
+CREATE TRIGGER person_spyorg_upd BEFORE UPDATE ON person_spyorg
+FOR EACH ROW
+BEGIN
+  SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'An error occurred: person_spyorg cannot be updated. (trigger)';
+END;;
+
+DELIMITER ;
+
 CREATE TABLE spy_ep_info(
 	info_id INT PRIMARY KEY AUTO_INCREMENT,
     info_description BLOB not null,
