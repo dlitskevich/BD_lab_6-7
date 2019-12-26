@@ -103,8 +103,39 @@ BEGIN
 		END IF;
 	END LOOP insert_loop_suspected;
 END;;
+
+CREATE PROCEDURE insert_into_case_info()
+BEGIN
+	DECLARE i INT DEFAULT 0;
+	insert_loop: LOOP
+		INSERT INTO case_info
+		(info_description, case_id, info_content)
+		VALUES
+		(CONV(FLOOR(RAND() * 99999999999999), 30, 36), FLOOR(RAND()*40+1), CONV(FLOOR(RAND() * 99999999999999), 15, 36));
+        IF i > 20 THEN
+			LEAVE insert_loop;
+		END IF;
+	END LOOP insert_loop;
+END;;
+
+CREATE PROCEDURE insert_into_spy_ep_info()
+BEGIN
+	DECLARE i INT DEFAULT 0;
+	insert_loop: LOOP
+		INSERT INTO spy_ep_info
+		(info_description, spy_ep_id, info_content)
+		VALUES
+		(CONV(FLOOR(RAND() * 99999999999999), 30, 36), FLOOR(RAND()*40+1), CONV(FLOOR(RAND() * 99999999999999), 15, 36));
+        IF i > 20 THEN
+			LEAVE insert_loop;
+		END IF;
+	END LOOP insert_loop;
+END;;
+
 DELIMITER ;
 
 CALL insert_into_politics();
 CALL insert_into_rehabilitation();
 CALL insert_into_person_spyorg();
+CALL insert_into_case_info();
+CALL insert_into_spy_ep_info();
