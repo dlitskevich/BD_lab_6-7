@@ -66,6 +66,8 @@ GRANT EXECUTE ON ALLIDB.view_compromat TO person_manager;
 GRANT EXECUTE ON ALLIDB.view_person_by_id TO person_manager;
 GRANT EXECUTE ON ALLIDB.view_person_by_name TO person_manager;
 GRANT EXECUTE ON ALLIDB.view_relatives TO person_manager;
+GRANT EXECUTE ON ALLIDB.view_person_afterlife TO person_manager;
 
 CREATE USER relative IDENTIFIED BY 'rel_password';
 GRANT EXECUTE ON ALLIDB.view_person_by_name TO relative;
+GRANT EXECUTE ON ALLIDB.view_person_afterlife TO relative;
