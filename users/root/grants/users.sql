@@ -71,3 +71,4 @@ GRANT EXECUTE ON ALLIDB.view_person_afterlife TO person_manager;
 CREATE USER relative IDENTIFIED BY 'rel_password';
 GRANT EXECUTE ON ALLIDB.view_person_by_name TO relative;
 GRANT EXECUTE ON ALLIDB.view_person_afterlife TO relative;
+GRANT SELECT ON ALLIDB.rehabilitated_cases TO relative;
