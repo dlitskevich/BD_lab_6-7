@@ -1,3 +1,5 @@
+USE ALLIDB;
+
 INSERT INTO party
 (party_name)
 VALUES
@@ -77,7 +79,32 @@ BEGIN
 		END IF;
 	END LOOP insert_loop;
 END;;
+
+CREATE PROCEDURE insert_into_person_spyorg()
+BEGIN
+	DECLARE i INT DEFAULT 0;
+	insert_loop_spotted: LOOP
+		INSERT INTO person_spyorg
+		(person_id, spyorg_id, episode_date, standing)
+		VALUES
+		(FLOOR(RAND()*50+1), FLOOR(RAND()*4+1), '1960-01-01' - INTERVAL FLOOR(RAND() * 365) DAY, 'spotted');
+        IF i > 20 THEN
+			LEAVE insert_loop_spotted;
+		END IF;
+	END LOOP insert_loop_spotted;
+    
+    insert_loop_suspected: LOOP
+		INSERT INTO person_spyorg
+		(person_id, spyorg_id, episode_date, standing)
+		VALUES
+		(FLOOR(RAND()*50+1), FLOOR(RAND()*4+1), '1960-01-01' - INTERVAL FLOOR(RAND() * 365) DAY, 'suspected');
+        IF i > 50 THEN
+			LEAVE insert_loop_suspected;
+		END IF;
+	END LOOP insert_loop_suspected;
+END;;
 DELIMITER ;
 
 CALL insert_into_politics();
 CALL insert_into_rehabilitation();
+CALL insert_into_person_spyorg();
