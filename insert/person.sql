@@ -37,7 +37,7 @@ values
 insert into shot
 	(case_id, shot_date)
 values
-	(1, '1862-10-17')
+	(1, '1962-10-17')
 ;
 
 insert into afterlife

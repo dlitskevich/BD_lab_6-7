@@ -465,14 +465,18 @@ BEGIN
 	END IF;
 END;;
 
--- drop trigger shot_death_date;;
+--  drop trigger shot_death_date;;
 CREATE TRIGGER shot_death_date BEFORE INSERT ON shot
 FOR EACH ROW
 BEGIN
     DECLARE curr_person INT;
     declare death_date date default null;
+    declare case_end date default null;
     
     SELECT person_id INTO curr_person FROM cases
+    WHERE case_id = NEW.case_id
+    ;
+    SELECT end_date INTO case_end FROM cases
     WHERE case_id = NEW.case_id
     ;
     SELECT cast(aes_decrypt(death,'death')as date) INTO death_date FROM person
@@ -481,6 +485,11 @@ BEGIN
     IF NEW.shot_date > death_date THEN
 		SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'An error occurred: person cannot be shot (trigger)';
+	END IF;
+    
+    IF NEW.shot_date < case_end THEN
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'An error occurred: case is not closed (trigger)';
 	END IF;
     
     UPDATE person
