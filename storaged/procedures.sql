@@ -96,22 +96,17 @@ BEGIN
     VALUES
     (curr_person, compromat_content, compromat_description);
 END;;
-CALL spy_actions(55);;
+
 DROP PROCEDURE spy_actions;;
 CREATE PROCEDURE spy_actions (IN spy INT)
 BEGIN
-	SELECT CAST(AES_DECRYPT(spy_ep_info.info_description, 'info_description') AS CHAR) AS info_description,
-		   AES_DECRYPT(spy_ep_info.info_content, 'content') AS info_content,
-		   person_spyorg.episode_date AS episode_date,
-           person_spyorg.standing AS standing,
-           spyorg.spyorg_name AS spyorg_name,
-           CAST(AES_DECRYPT(person_name, 'name') AS CHAR) AS person_name,
-		   CAST(AES_DECRYPT(person_surname, 'surname') AS CHAR) AS person_surname,
-           person_spyorg.episode_id
-	FROM spy_ep_info
-    INNER JOIN person_spyorg ON person_spyorg.episode_id = spy_ep_info.spy_ep_id
+	SELECT episode_date, spyorg_name, standing,
+		   CAST(AES_DECRYPT(info_description, 'info_description') AS CHAR) AS info_description,
+           AES_DECRYPT(info_content, 'content') AS info_content,
+           spy_ep_info.info_id AS info_id
+    FROM person_spyorg
     NATURAL JOIN spyorg
-    NATURAL JOIN person
+    INNER JOIN spy_ep_info ON spy_ep_id = episode_id
     WHERE person_id = spy;
 END;;
 
