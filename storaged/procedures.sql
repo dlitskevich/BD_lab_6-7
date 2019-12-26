@@ -77,10 +77,14 @@ BEGIN
     INNER JOIN criminal_relative ON criminal_relative.relative_id = person.person_id
     WHERE criminal_relative.criminal_id = curr_person;
 END;;
-
+CALL transfer_history(5);;
+DROP PROCEDURE transfer_history;;
 CREATE PROCEDURE transfer_history (IN curr_case INT)
 BEGIN
-	SELECT * FROM transfer
+	SELECT temp.*, placeD.placeD_name AS pr FROM
+    (SELECT transfer.*, placeD.* FROM transfer
+    INNER JOIN placeD ON transfer.placeD_current = placeD.placeD_id) AS temp
+    LEFT JOIN placeD ON temp.placeD_prev = placeD.placeD_id
     WHERE case_id = curr_case;
 END;;
 
@@ -91,18 +95,23 @@ BEGIN
     VALUES
     (curr_person, compromat_content, compromat_description);
 END;;
-
+CALL spy_actions(55);;
+DROP PROCEDURE spy_actions;;
 CREATE PROCEDURE spy_actions (IN spy INT)
 BEGIN
-	SELECT CAST(AES_DECRYPT(spy_ep_info.info_description, 'description') AS CHAR) AS info_description,
+	SELECT CAST(AES_DECRYPT(spy_ep_info.info_description, 'info_description') AS CHAR) AS info_description,
 		   AES_DECRYPT(spy_ep_info.info_content, 'content') AS info_content,
 		   person_spyorg.episode_date AS episode_date,
            person_spyorg.standing AS standing,
-           spyorg.spyorg_name AS spyorg_name
+           spyorg.spyorg_name AS spyorg_name,
+           CAST(AES_DECRYPT(person_name, 'name') AS CHAR) AS person_name,
+		   CAST(AES_DECRYPT(person_surname, 'surname') AS CHAR) AS person_surname,
+           person_spyorg.episode_id
 	FROM spy_ep_info
     INNER JOIN person_spyorg ON person_spyorg.episode_id = spy_ep_info.spy_ep_id
-    INNER JOIN spyorg ON spyorg.spyorg_id = person_spyorg.spyorg_id
-    WHERE person_spyorg.person_id = spy;
+    NATURAL JOIN spyorg
+    NATURAL JOIN person
+    WHERE person_id = spy;
 END;;
 
 DROP PROCEDURE view_person_by_id;;
