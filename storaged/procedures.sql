@@ -77,11 +77,12 @@ BEGIN
     INNER JOIN criminal_relative ON criminal_relative.relative_id = person.person_id
     WHERE criminal_relative.criminal_id = curr_person;
 END;;
-CALL transfer_history(5);;
+
 DROP PROCEDURE transfer_history;;
 CREATE PROCEDURE transfer_history (IN curr_case INT)
 BEGIN
-	SELECT temp.*, placeD.placeD_name AS pr FROM
+	SELECT temp.transfer_action AS action, temp.transfer_date AS tr_date,
+			temp.placeD_name AS curr_placeD, placeD.placeD_name AS placeD_prev FROM
     (SELECT transfer.*, placeD.* FROM transfer
     INNER JOIN placeD ON transfer.placeD_current = placeD.placeD_id) AS temp
     LEFT JOIN placeD ON temp.placeD_prev = placeD.placeD_id
