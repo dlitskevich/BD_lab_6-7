@@ -1,8 +1,8 @@
 ﻿<Properties StartupConfiguration="{7E137999-4C71-4864-B9E4-E8CA3EAAFF8F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="nk_console_app/DAL.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="nk_console_app/Program.cs">
     <Files>
-      <File FileName="nk_console_app/Program.cs" Line="46" Column="39" />
-      <File FileName="nk_console_app/DAL.cs" Line="46" Column="12" NotebookId="1" />
+      <File FileName="nk_console_app/Program.cs" Line="24" Column="65" />
+      <File FileName="nk_console_app/DAL.cs" Line="46" Column="3" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

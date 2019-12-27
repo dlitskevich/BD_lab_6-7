@@ -1,0 +1,15 @@
+/Users/danila/Projects/nk_console_app_classes/nk_console_app_classes/bin/Debug/nk_console_app_classes.exe.config
+/Users/danila/Projects/nk_console_app_classes/nk_console_app_classes/bin/Debug/nk_console_app_classes.exe
+/Users/danila/Projects/nk_console_app_classes/nk_console_app_classes/bin/Debug/nk_console_app_classes.pdb
+/Users/danila/Projects/nk_console_app_classes/nk_console_app_classes/bin/Debug/BouncyCastle.Crypto.dll
+/Users/danila/Projects/nk_console_app_classes/nk_console_app_classes/bin/Debug/Google.Protobuf.dll
+/Users/danila/Projects/nk_console_app_classes/nk_console_app_classes/bin/Debug/MySql.Data.dll
+/Users/danila/Projects/nk_console_app_classes/nk_console_app_classes/bin/Debug/Renci.SshNet.dll
+/Users/danila/Projects/nk_console_app_classes/nk_console_app_classes/bin/Debug/Google.Protobuf.xml
+/Users/danila/Projects/nk_console_app_classes/nk_console_app_classes/bin/Debug/Renci.SshNet.xml
+/Users/danila/Projects/nk_console_app_classes/nk_console_app_classes/bin/Debug/MySql.Data.xml
+/Users/danila/Projects/nk_console_app_classes/nk_console_app_classes/obj/Debug/nk_console_app_classes.csprojAssemblyReference.cache
+/Users/danila/Projects/nk_console_app_classes/nk_console_app_classes/obj/Debug/nk_console_app_classes.exe.config
+/Users/danila/Projects/nk_console_app_classes/nk_console_app_classes/obj/Debug/nk_console_app_classes.csproj.CopyComplete
+/Users/danila/Projects/nk_console_app_classes/nk_console_app_classes/obj/Debug/nk_console_app_classes.exe
+/Users/danila/Projects/nk_console_app_classes/nk_console_app_classes/obj/Debug/nk_console_app_classes.pdb

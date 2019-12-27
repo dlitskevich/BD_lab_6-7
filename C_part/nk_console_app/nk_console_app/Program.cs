@@ -16,12 +16,12 @@ namespace nk_console_app {
 				DAL myAccesLayer = new DAL();
 				myAccesLayer.OpenConnection("server=127.0.0.1; uid=root; password=Password; database=alliDB ");
 				/*
-				myAccesLayer.Display("person", "person_id, cast(aes_decrypt(person_name, 'name')as char)");
+				myAccesLayer.Display("person", "person_id, cast(aes_decrypt(person_name, 'name')as char)as name");
 				myAccesLayer.Display(
 					"person natural join cases natural join sentence",
 					"person_id," +
-					" cast(aes_decrypt(person_name, 'name')as char)," +
-					" cast(aes_decrypt(person_surname, 'surname')as char)," +
+					" cast(aes_decrypt(person_name, 'name')as char)as name," +
+					" cast(aes_decrypt(person_surname, 'surname')as char)as surname," +
 					"case_id," +
 					"sentence_text"
 					);

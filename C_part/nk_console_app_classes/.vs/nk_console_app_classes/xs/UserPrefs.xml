@@ -1,0 +1,26 @@
+﻿<Properties StartupConfiguration="{5EC45371-41F9-44CF-BADF-69DAB71AD3CE}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="nk_console_app_classes/Program.cs">
+    <Files>
+      <File FileName="nk_console_app_classes/Program.cs" Line="1" Column="1" />
+      <File FileName="nk_console_app_classes/DAL.cs" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="nk_console_app_classes" expanded="True">
+            <Node name="nk_console_app_classes" expanded="True">
+              <Node name="Program.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|anycpu" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.nk__console__app__classes FirstBuild="True" PreferredExecutionTarget="MonoDevelop.Default" />
+</Properties>
