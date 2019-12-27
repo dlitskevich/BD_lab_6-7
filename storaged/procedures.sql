@@ -50,23 +50,27 @@ BEGIN
     COMMIT;
 END;;
 
+-- DROP PROCEDURE view_cases;;
 CREATE PROCEDURE view_cases(IN curr_person INT)
 BEGIN
-	SELECT case_id, person_id, article_id,
+	SELECT case_id, article_name,
 			start_date, end_date, authority, 
-            sentence_id, times
+            sentence_text, times
 	FROM cases
+    NATURAL JOIN article
+    NATURAL JOIN sentence
     WHERE person_id = curr_person;
 END;;
 
+-- DROP PROCEDURE view_afterlife;;
 CREATE PROCEDURE view_afterlife (IN curr_person INT)
 BEGIN
 	SELECT CAST(AES_DECRYPT(person_name, 'name') AS CHAR) AS person_name,
 		   CAST(AES_DECRYPT(person_surname, 'surname') AS CHAR) AS person_surname,
-		   afterlife.address, afterlife.occupation, afterlife.biography, afterlife.afterlife_start_date
+		   afterlife.address AS address, occupation, afterlife.biography AS bio, afterlife_start_date
     FROM afterlife
     INNER JOIN person ON person.person_id = afterlife.person_id
-    WHERE person_id = curr_person;
+    WHERE afterlife.person_id = curr_person;
 END;;
 
 CREATE PROCEDURE view_relatives (IN curr_person INT)
