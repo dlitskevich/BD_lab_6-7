@@ -11,6 +11,9 @@ GRANT EXECUTE ON procedure ALLIDB.create_case TO cases_manager;
 GRANT EXECUTE ON procedure ALLIDB.case_details TO cases_manager;
 GRANT EXECUTE ON procedure ALLIDB.view_person_by_id TO cases_manager;
 GRANT EXECUTE ON procedure ALLIDB.view_person_by_name TO cases_manager;
+GRANT SELECT ON ALLIDB.criminal_code TO cases_manager;
+GRANT SELECT ON ALLIDB.shot_person TO cases_manager;
+GRANT SELECT ON ALLIDB.rehabilitated_cases TO cases_manager;
 
 
 CREATE USER shooter IDENTIFIED BY 's_password';
@@ -19,6 +22,7 @@ GRANT SELECT ON ALLIDB.cases TO shooter;
 GRANT EXECUTE ON procedure ALLIDB.shoot_person TO shooter;
 GRANT EXECUTE ON procedure ALLIDB.case_details TO shooter;
 GRANT EXECUTE ON procedure ALLIDB.view_cases TO shooter;
+GRANT SELECT ON ALLIDB.shot_person TO shooter;
 
 
 CREATE USER reabilitator IDENTIFIED BY 'r_password';
@@ -26,6 +30,7 @@ GRANT SELECT, INSERT, UPDATE ON ALLIDB.rehabilitation TO reabilitator;
 GRANT SELECT ON ALLIDB.cases TO reabilitator;
 GRANT EXECUTE ON procedure ALLIDB.case_details TO reabilitator;
 GRANT EXECUTE ON procedure ALLIDB.view_cases TO reabilitator;
+GRANT SELECT ON ALLIDB.rehabilitated_cases TO reabilitator;
 
 
 CREATE USER warden IDENTIFIED BY 'w_password';
