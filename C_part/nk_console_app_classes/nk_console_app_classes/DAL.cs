@@ -18,7 +18,44 @@ namespace nk_console_app_classes
 			connection = null;
 		}
 
-		public void OpenConnection (string conStr)
+        public void OpenConnectionConsole(string server= "127.0.0.1", string database= "alliDB")
+        {
+            try
+            {
+                Console.WriteLine("Enter user id");
+                string uid = Console.ReadLine();
+                if (uid == "")
+                {
+                    uid = "root";
+                }
+
+                Console.WriteLine("Enter password");
+                string password = Console.ReadLine();
+                if (password == "")
+                {
+                    password = "Password";
+                }
+
+                string connString = string.Format("server={0}; " +
+                                                  "uid={2}; " +
+                                                  "password={3}; " +
+                                                  "database={1}", server, database, uid, password);
+
+                OpenConnection(connString);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Wanna try again?");
+                string try_again = Console.ReadLine();
+                if (try_again=="")
+                {
+                    OpenConnectionConsole(server, database);
+                }
+            }
+        }
+
+        public void OpenConnection (string conStr)
 		{
 			connection = new MySqlConnection (conStr);
 			connection.Open ();
@@ -116,7 +153,7 @@ namespace nk_console_app_classes
             {
                 while (dr.Read())
                 {
-					Console.WriteLine (String.Format("{0}", dr["start_date"].ToString().F(10)));
+					// Console.WriteLine (String.Format("{0}", dr["start_date"].ToString()));
                     resList.Add(new Cases(
                                           (int)dr["case_id"],
                                           (int)dr["person_id"],
@@ -133,6 +170,60 @@ namespace nk_console_app_classes
             return resList;
         }
 
-    }
+		public List<Person> getPersonAsList ()
+		{
+			List<Person> resList = new List<Person> ();
+			MySqlCommand cmd = new MySqlCommand ("SELECT " +
+													"person_id, " +
+													" cast(aes_decrypt(person_name, 'name')as char) as name," +
+													" cast(aes_decrypt(person_surname, 'surname')as char) as surname," +
+													" cast(aes_decrypt(address, 'address')as char) as address," +
+													" cast(aes_decrypt(birth, 'birth')as char) as birth," +
+													" cast(aes_decrypt(death, 'death')as char) as death," +
+													" cast(aes_decrypt(gender, 'gender')as char) as gender," +
+													" cast(aes_decrypt(biography, 'biography')as char) as bio FROM person",
+													connection);
+			using (MySqlDataReader dr = cmd.ExecuteReader ()) {
+				while (dr.Read ()) {
+					// Console.WriteLine (String.Format ("{0}", dr ["name"].ToString ()));
+					resList.Add (new Person (
+										  (int)dr ["person_id"],
+										  dr ["name"].ToString (),
+										  dr ["surname"].ToString (),
+										  dr ["address"].ToString (),
+										  dr ["birth"].ToString (),
+										  dr ["death"].ToString (),
+										  dr ["gender"].ToString (),
+										  dr ["bio"].ToString ()
+										  )
+								);
+				}
+			}
+			return resList;
+		}
+
+		public List<Afterlife> getAfterlifeAsList() {
+			List<Afterlife> resList = new List<Afterlife> ();
+			MySqlCommand cmd = new MySqlCommand ("SELECT * FROM afterlife",
+													connection);
+			using (MySqlDataReader dr = cmd.ExecuteReader ()) {
+				while (dr.Read ()) {
+					// Console.WriteLine (String.Format ("{0}", dr ["name"].ToString ()));
+					resList.Add (new Afterlife (
+										  (int)dr ["afterlife_id"],
+										  (int)dr ["person_id"],
+										  (int)dr ["case_id"],
+										  dr ["address"].ToString (),
+										  dr ["occupation"].ToString (),
+										  dr ["biography"].ToString (),
+										  dr ["afterlife_start_date"].ToString ()
+										  )
+								);
+				}
+			}
+			return resList;
+		}
+
+	}
 }
 

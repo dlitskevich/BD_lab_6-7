@@ -78,7 +78,7 @@ BEGIN
     WHERE criminal_relative.criminal_id = curr_person;
 END;;
 
-DROP PROCEDURE transfer_history;;
+-- DROP PROCEDURE transfer_history;;
 CREATE PROCEDURE transfer_history (IN curr_case INT)
 BEGIN
 	SELECT temp.transfer_action AS action, temp.transfer_date AS tr_date,
@@ -97,7 +97,7 @@ BEGIN
     (curr_person, compromat_content, compromat_description);
 END;;
 
-DROP PROCEDURE spy_actions;;
+-- DROP PROCEDURE spy_actions;;
 CREATE PROCEDURE spy_actions (IN spy INT)
 BEGIN
 	SELECT episode_date, spyorg_name, standing,
@@ -110,7 +110,7 @@ BEGIN
     WHERE person_id = spy;
 END;;
 
-DROP PROCEDURE view_person_by_id;;
+-- DROP PROCEDURE view_person_by_id;;
 CREATE PROCEDURE view_person_by_id (IN curr_id INT)
 BEGIN
 	SELECT CAST(AES_DECRYPT(person_name, 'name') AS CHAR) AS person_name,
@@ -132,6 +132,7 @@ BEGIN
     NATURAL JOIN party
     WHERE person_id = curr_id;
 END;;
+
 
 CREATE PROCEDURE view_person_by_name(IN name_pattern VARCHAR(45), IN surname_pattern VARCHAR(45))
 BEGIN
@@ -197,7 +198,7 @@ BEGIN
 	WHERE person_name LIKE name_pattern AND person_surname LIKE surname_pattern;           
 END;;
 
-drop procedure get_compromat;;
+-- drop procedure get_compromat;;
 CREATE PROCEDURE get_compromat(IN curr_person INT)
 BEGIN
 	SELECT importance,
@@ -210,4 +211,5 @@ END;;
 
 DELIMITER ;
 
-call get_compromat(9);
+-- call view_compromat(9);
+-- call get_compromat(9);

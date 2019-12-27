@@ -16,9 +16,9 @@ namespace nk_console_app_classes {
                 Console.WriteLine("My DAL app");
 
                 DAL myAccesLayer = new DAL();
-                myAccesLayer.OpenConnection("server=127.0.0.1; uid=root; password=Password; database=alliDB ");
-
-				/*
+                // myAccesLayer.OpenConnection("server=127.0.0.1; uid=root; password=Password; database=alliDB ");
+                myAccesLayer.OpenConnectionConsole();
+                /*
 				myAccesLayer.Display("person", "person_id, cast(aes_decrypt(person_name, 'name')as char) as name");
 				myAccesLayer.Display(
 					"person natural join cases natural join sentence",
@@ -46,7 +46,7 @@ namespace nk_console_app_classes {
 					" cast(aes_decrypt(person_surname, 'surname')as char)"
 					);
 					*/
-				/*
+                /*
 				myAccesLayer.Display(
                     "person  where person_id=16",
                     "person_id," +
@@ -66,13 +66,20 @@ namespace nk_console_app_classes {
                 
 				*/
 
-				List<Cases> caseList = myAccesLayer.getCasesAsList ();
+                List<Cases> caseList = myAccesLayer.getCasesAsList ();
 				Console.WriteLine(caseList[1].person_id);
+
+				List<Person> personList = myAccesLayer.getPersonAsList ();
+				Console.WriteLine (personList[1].person_name);
+
+				List<Afterlife> afterlifeList = myAccesLayer.getAfterlifeAsList ();
+				Console.WriteLine (afterlifeList [1].address);
 
 				Console.ReadLine();
 				myAccesLayer.CloseConnection ();
 
-			} catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.ReadLine();

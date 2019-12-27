@@ -1,11 +1,12 @@
 ﻿<Properties StartupConfiguration="{5EC45371-41F9-44CF-BADF-69DAB71AD3CE}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="nk_console_app_classes/Program.cs">
     <Files>
-      <File FileName="nk_console_app_classes/Program.cs" Line="10" Column="2" />
-      <File FileName="nk_console_app_classes/DAL.cs" Line="124" Column="45" />
-      <File FileName="nk_console_app_classes/Cases.cs" Line="22" Column="19" />
-      <File FileName="nk_console_app_classes/Person.cs" Line="20" Column="70" />
-      <File FileName="nk_console_app_classes/Afterlife.cs" Line="19" Column="55" />
+      <File FileName="nk_console_app_classes/Program.cs" Line="70" Column="10" />
+      <File FileName="nk_console_app_classes/DAL.cs" Line="180" Column="8" />
+      <File FileName="nk_console_app_classes/Cases.cs" Line="9" Column="16" />
+      <File FileName="nk_console_app_classes/Person.cs" Line="21" Column="1" />
+      <File FileName="nk_console_app_classes/Afterlife.cs" Line="23" Column="18" />
+      <File FileName="nk_console_app_classes/EmptyClass.cs" Line="7" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -17,6 +18,9 @@
           </Node>
         </State>
       </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
@@ -25,5 +29,5 @@
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.nk__console__app__classes FirstBuild="True" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.ItemProperties.nk__console__app__classes PreferredExecutionTarget="MonoDevelop.Default" />
 </Properties>
