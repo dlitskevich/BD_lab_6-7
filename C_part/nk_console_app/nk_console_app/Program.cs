@@ -30,8 +30,8 @@ namespace nk_console_app {
 				myAccesLayer.Display(
 					"person",
 					"person_id," +
-					" cast(aes_decrypt(person_name, 'name')as char)," +
-					" cast(aes_decrypt(person_surname, 'surname')as char)",
+					" cast(aes_decrypt(person_name, 'name')as char)as name," +
+					" cast(aes_decrypt(person_surname, 'surname')as char)as surname",
 					"where person_id=16"
 					);
 				myAccesLayer.UpdateTable("person", "person_name='Flag1'", "person_id=16");

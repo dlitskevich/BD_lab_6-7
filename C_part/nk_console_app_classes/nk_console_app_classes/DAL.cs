@@ -86,7 +86,7 @@ namespace nk_console_app_classes
 		{
 
 			for (int column = 0; column < dt.Columns.Count; column++) {
-				Console.Write ("{0,-25}", dt.Columns [column].ColumnName);
+				Console.Write ("{0,-15}", dt.Columns [column].ColumnName);
 			}
 			Console.WriteLine ("\n  ");
 
@@ -224,6 +224,28 @@ namespace nk_console_app_classes
 			return resList;
 		}
 
+        public void UpdatePersonByList(List<Person> new_list)
+        {
+            List<Person> old_list = getPersonAsList();
+
+            for (int row = 0; row < new_list.Count; row++)
+            {
+                for (int field = 1; field < 8; field++)
+                {
+                    if (new_list[row].getValue(field) != old_list[row].getValue(field))
+                    {
+                        UpdateTable("person",
+                                    string.Format("{0}='{1}'", new_list[row].getFieldName(field), new_list[row].getValue(field)),
+                                    string.Format("person_id={0}", new_list[row].getValue(1))
+                                    );
+                                    
+                        //Console.WriteLine(new_list[row].getValue(field) + new_list[row].getFieldName(field));
+                    }
+                    
+                }
+                
+            }
+        }
 	}
 }
 

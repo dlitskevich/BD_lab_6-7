@@ -16,66 +16,35 @@ namespace nk_console_app_classes {
                 Console.WriteLine("My DAL app");
 
                 DAL myAccesLayer = new DAL();
-                // myAccesLayer.OpenConnection("server=127.0.0.1; uid=root; password=Password; database=alliDB ");
-                myAccesLayer.OpenConnectionConsole();
-                /*
-				myAccesLayer.Display("person", "person_id, cast(aes_decrypt(person_name, 'name')as char) as name");
-				myAccesLayer.Display(
-					"person natural join cases natural join sentence",
-					"person_id," +
-					" cast(aes_decrypt(person_name, 'name')as char) as name," +
-					" cast(aes_decrypt(person_surname, 'surname')as char) as surname," +
-					"case_id," +
-					"sentence_text"
-					);
-				Console.ReadLine();
-                /*
-				myAccesLayer.Display(
-					"person",
-					"person_id," +
-					" cast(aes_decrypt(person_name, 'name')as char)," +
-					" cast(aes_decrypt(person_surname, 'surname')as char)",
-					"where person_id=16"
-					);
-				myAccesLayer.UpdateTable("person", "person_name='Flag1'", "person_id=16");
-				Console.ReadLine();
-				myAccesLayer.Display(
-					"person  where person_id=16",
-					"person_id," +
-					" cast(aes_decrypt(person_name, 'name')as char)," +
-					" cast(aes_decrypt(person_surname, 'surname')as char)"
-					);
-					*/
-                /*
-				myAccesLayer.Display(
-                    "person  where person_id=16",
-                    "person_id," +
-                    " cast(aes_decrypt(person_name, 'name')as char)," +
-                    " cast(aes_decrypt(person_surname, 'surname')as char)"
-                    );
+                myAccesLayer.OpenConnection("server=127.0.0.1; uid=root; password=Password; database=alliDB ");
+                // myAccesLayer.OpenConnectionConsole();
 
-                myAccesLayer.UpdateTableConsole();
 
-                myAccesLayer.Display(
-                    "person  where person_id=16",
-                    "person_id," +
-                    " cast(aes_decrypt(person_name, 'name')as char)," +
-                    " cast(aes_decrypt(person_surname, 'surname')as char)"
-                    );
+                List<Cases> caseList = myAccesLayer.getCasesAsList();
+                Console.WriteLine(caseList[1].person_id);
 
-                
-				*/
-
-                List<Cases> caseList = myAccesLayer.getCasesAsList ();
-				Console.WriteLine(caseList[1].person_id);
-
-				List<Person> personList = myAccesLayer.getPersonAsList ();
-				Console.WriteLine (personList[1].person_name);
-
-				List<Afterlife> afterlifeList = myAccesLayer.getAfterlifeAsList ();
+                List<Afterlife> afterlifeList = myAccesLayer.getAfterlifeAsList ();
 				Console.WriteLine (afterlifeList [1].address);
 
-				Console.ReadLine();
+               
+                List<Person> personList = myAccesLayer.getPersonAsList();
+                personList[1].person_name = "New_NAme";
+                personList[1].person_surname = "New_Surname";
+                personList[1].address = "Grodno Pobedy";
+
+                Console.WriteLine(personList[1].person_name);
+
+                myAccesLayer.UpdatePersonByList(personList);
+
+                myAccesLayer.Display(
+                     "person",
+                     "person_id," +
+                     " cast(aes_decrypt(person_name, 'name')as char) as name," +
+                     " cast(aes_decrypt(person_surname, 'surname')as char) as surname,"+
+                     " cast(aes_decrypt(address, 'address')as char) as address"
+                     );
+
+                Console.ReadLine();
 				myAccesLayer.CloseConnection ();
 
             }

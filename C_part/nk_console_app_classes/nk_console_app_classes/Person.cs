@@ -28,5 +28,57 @@ namespace nk_console_app_classes
             gender = sex;
             bio = biogr;
         }
+
+        public string getValue(int field)
+        {
+            switch (field)
+            {
+                case 1:
+                    return person_id.ToString();
+                case 2:
+                    return person_name;
+                case 3:
+                    return person_surname;
+                case 4:
+                    return address;
+                case 5:
+                    return birth;
+                case 6:
+                    return death;
+                case 7:
+                    return gender;
+                case 8:
+                    return bio;
+                default:
+                    return "";
+                    // break;
+            }
+        }
+
+        public string getFieldName(int field)
+        {
+            switch (field)
+            {
+                case 1:
+                    return "person_id";
+                case 2:
+                    return "person_name";
+                case 3:
+                    return "person_surname";
+                case 4:
+                    return "address";
+                case 5:
+                    return "birth";
+                case 6:
+                    return "death";
+                case 7:
+                    return "gender";
+                case 8:
+                    return "biography";
+                default:
+                    return "";
+                    // break;
+            }
+        }
     }
 }

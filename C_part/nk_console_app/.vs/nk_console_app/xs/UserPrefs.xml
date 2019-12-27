@@ -1,8 +1,8 @@
 ﻿<Properties StartupConfiguration="{7E137999-4C71-4864-B9E4-E8CA3EAAFF8F}|Default">
   <MonoDevelop.Ide.Workbench ActiveDocument="nk_console_app/DAL.cs">
     <Files>
-      <File FileName="nk_console_app/Program.cs" Line="13" Column="9" />
-      <File FileName="nk_console_app/DAL.cs" Line="100" Column="4" NotebookId="1" />
+      <File FileName="nk_console_app/Program.cs" Line="34" Column="65" />
+      <File FileName="nk_console_app/DAL.cs" Line="46" Column="25" NotebookId="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -13,6 +13,9 @@
             </Node>
           </Node>
         </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

@@ -43,7 +43,7 @@ namespace nk_console_app {
 		private static void DisplayTable(DataTable dt) {
 
 			for (int column = 0; column < dt.Columns.Count; column++) {
-				Console.Write("{0,-25}", dt.Columns[column].ColumnName);
+				Console.Write("{0,-15}", dt.Columns[column].ColumnName);
 			}
 			Console.WriteLine("\n  ");
 

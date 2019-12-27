@@ -28,5 +28,7 @@ namespace nk_console_app_classes
             sentence_id = sentence;
             times = time;
         }
+
+        
     }
 }
