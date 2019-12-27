@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task5_twin_classes_
+namespace nk_console_app_classes
 {
     class Person
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task5_twin_classes_
+namespace nk_console_app_classes
 {
     class Afterlife
     {
@@ -21,7 +21,8 @@ namespace Task5_twin_classes_
             afterlife_id = id;
             person_id = person;
             case_id = case_;
-            afterlife_start_date = start_date;
+			address = addr;
+			afterlife_start_date = start_date;
             occupation = job;
             bio = biogr;
         }

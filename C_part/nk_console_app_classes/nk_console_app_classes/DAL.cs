@@ -13,111 +13,124 @@ namespace nk_console_app_classes
     {
         private MySqlConnection connection;
 
-        public DAL()
-        {
-            connection = null;
-        }
+		public DAL ()
+		{
+			connection = null;
+		}
 
-        public void OpenConnection(string conStr)
-        {
-            connection = new MySqlConnection(conStr);
-            connection.Open();
-        }
+		public void OpenConnection (string conStr)
+		{
+			connection = new MySqlConnection (conStr);
+			connection.Open ();
+		}
 
-        public void CloseConnection()
-        {
-            connection.Close();
-        }
+		public void CloseConnection ()
+		{
+			connection.Close ();
+		}
 
-        public void Display(string table_name, string fields = "*", string where = "")
-        {
-            MySqlCommand command = new MySqlCommand(String.Format("SELECT {1} FROM {0} {2}", table_name, fields, where), connection);
-            DataTable restable = new DataTable();
-            using (MySqlDataReader dr = command.ExecuteReader())
-            {
-                if (dr.HasRows)
-                {
-                    Console.WriteLine(String.Format("Table {0}\n", table_name));
-                    restable.Load(dr);
-                    DisplayTable(restable);
-                }
-                else
-                {
-                    Console.WriteLine(String.Format("Table {0} is empty\n", table_name));
-                }
+		public void Display (string table_name, string fields = "*", string where = "")
+		{
+			MySqlCommand command = new MySqlCommand (String.Format ("SELECT {1} FROM {0} {2}", table_name, fields, where), connection);
+			DataTable restable = new DataTable ();
+			using (MySqlDataReader dr = command.ExecuteReader ()) {
+				if (dr.HasRows) {
+					Console.WriteLine (String.Format ("Table {0}\n", table_name));
+					restable.Load (dr);
+					DisplayTable (restable);
+				} else {
+					Console.WriteLine (String.Format ("Table {0} is empty\n", table_name));
+				}
 
-            }
-        }
+			}
+		}
 
-        private static void DisplayTable(DataTable dt)
-        {
+		private static void DisplayTable (DataTable dt)
+		{
 
-            for (int column = 0; column < dt.Columns.Count; column++)
-            {
-                Console.Write("{0,-15}", dt.Columns[column].ColumnName);
-            }
-            Console.WriteLine("\n  ");
+			for (int column = 0; column < dt.Columns.Count; column++) {
+				Console.Write ("{0,-25}", dt.Columns [column].ColumnName);
+			}
+			Console.WriteLine ("\n  ");
 
-            for (int row = 0; row < dt.Rows.Count; row++)
-            {
-                for (int column = 0; column < dt.Columns.Count; column++)
-                {
-                    Console.Write("{0,-15}", dt.Rows[row][column].ToString());
-                }
-                Console.WriteLine();
-            }
-        }
+			for (int row = 0; row < dt.Rows.Count; row++) {
+				for (int column = 0; column < dt.Columns.Count; column++) {
+					Console.Write ("{0,-15}", dt.Rows [row] [column].ToString ());
+				}
+				Console.WriteLine ();
+			}
+		}
 
 
 
-        public void UpdateTable(string table, string set, string where)
-        {
-            MySqlCommand updateCommand = new MySqlCommand(String.Format("UPDATE {0} SET {1} WHERE {2}", table, set, where), connection);
-            int res = updateCommand.ExecuteNonQuery();
-            Console.WriteLine("{0} rows affected!", res);
-        }
+		public void UpdateTable (string table, string set, string where)
+		{
+			MySqlCommand updateCommand = new MySqlCommand (String.Format ("UPDATE {0} SET {1} WHERE {2}", table, set, where), connection);
+			int res = updateCommand.ExecuteNonQuery ();
+			Console.WriteLine ("{0} rows affected!", res);
+		}
 
-        public void UpdateTableConsole()
-        {
-            Console.WriteLine("Enter table name");
-            string table = Console.ReadLine();
+		public void UpdateTableConsole ()
+		{
+			Console.WriteLine ("Enter table name");
+			string table = Console.ReadLine ();
 
-            Console.WriteLine(table);
-            DataTable dt = getTableAsDataTable(table);
-            string set = "";
-            string set_value = "";
+			Console.WriteLine (table);
+			DataTable dt = getTableAsDataTable (table);
+			string set = "";
+			string set_value = "";
 
-            for (int column = 0; column < dt.Columns.Count; column++)
-            {
-                Console.WriteLine("Enter " + dt.Columns[column].ColumnName);
-                set_value = Console.ReadLine();
-                if (set_value == "")
-                {
-                    continue;
-                }
-                else
-                {
-                    set += dt.Columns[column].ColumnName + "='" + set_value + "',";
-                }
-            }
-            set = set.Remove(set.Length - 1);
-            Console.WriteLine(set);
+			for (int column = 0; column < dt.Columns.Count; column++) {
+				Console.WriteLine ("Enter " + dt.Columns [column].ColumnName);
+				set_value = Console.ReadLine ();
+				if (set_value == "") {
+					continue;
+				} else {
+					set += dt.Columns [column].ColumnName + "='" + set_value + "',";
+				}
+			}
+			set = set.Remove (set.Length - 1);
+			Console.WriteLine (set);
 
-            Console.WriteLine("Enter where clause");
-            string where = Console.ReadLine();
+			Console.WriteLine ("Enter where clause");
+			string where = Console.ReadLine ();
 
-            UpdateTable(table, set, where);
-        }
+			UpdateTable (table, set, where);
+		}
 
-        private DataTable getTableAsDataTable(string table, string field = "*")
-        {
-            MySqlCommand cmd = new MySqlCommand(String.Format("SELECT {1} FROM {0} ", table, field), connection);
-            DataTable res_table = new DataTable();
+		private DataTable getTableAsDataTable (string table, string field = "*")
+		{
+			MySqlCommand cmd = new MySqlCommand (String.Format ("SELECT {1} FROM {0} ", table, field), connection);
+			DataTable res_table = new DataTable ();
+			using (MySqlDataReader dr = cmd.ExecuteReader ()) {
+				res_table.Load (dr);
+			}
+			return res_table;
+		}
+
+
+		public List<Cases> getCasesAsList() {
+            List<Cases> resList = new List<Cases>();
+            MySqlCommand cmd = new MySqlCommand("SELECT * FROM cases", connection);
             using (MySqlDataReader dr = cmd.ExecuteReader())
             {
-                res_table.Load(dr);
+                while (dr.Read())
+                {
+					Console.WriteLine (String.Format("{0}", dr["start_date"].ToString().F(10)));
+                    resList.Add(new Cases(
+                                          (int)dr["case_id"],
+                                          (int)dr["person_id"],
+										  (int)dr["article_id"],
+                                          dr["start_date"].ToString(),
+                                          dr["end_date"].ToString (),
+                                          dr["authority"].ToString (),
+                                          (int)dr["sentence_id"],
+                                          (int)dr["times"]
+                                          )
+                                );
+                }
             }
-            return res_table;
+            return resList;
         }
 
     }

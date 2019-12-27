@@ -5,21 +5,20 @@
 //using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Collections.Generic;
 
-namespace nk_console_app_classes
-{
-    class Program
-    {
-        static void Main(string[] args)
+namespace nk_console_app_classes {
+	class Program {
+		static void Main (string [] args)
         {
-            Console.WriteLine("My first DB app");
-            try
+			try
             {
                 Console.WriteLine("My DAL app");
 
                 DAL myAccesLayer = new DAL();
                 myAccesLayer.OpenConnection("server=127.0.0.1; uid=root; password=Password; database=alliDB ");
-                
+
+				/*
 				myAccesLayer.Display("person", "person_id, cast(aes_decrypt(person_name, 'name')as char) as name");
 				myAccesLayer.Display(
 					"person natural join cases natural join sentence",
@@ -47,7 +46,8 @@ namespace nk_console_app_classes
 					" cast(aes_decrypt(person_surname, 'surname')as char)"
 					);
 					*/
-                myAccesLayer.Display(
+				/*
+				myAccesLayer.Display(
                     "person  where person_id=16",
                     "person_id," +
                     " cast(aes_decrypt(person_name, 'name')as char)," +
@@ -63,16 +63,24 @@ namespace nk_console_app_classes
                     " cast(aes_decrypt(person_surname, 'surname')as char)"
                     );
 
-                myAccesLayer.CloseConnection();
+                
+				*/
 
-                //Console.ReadLine();
-            }
-            catch (Exception ex)
+				List<Cases> caseList = myAccesLayer.getCasesAsList ();
+				Console.WriteLine(caseList[1].person_id);
+
+				Console.ReadLine();
+				myAccesLayer.CloseConnection ();
+
+			} catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.ReadLine();
             }
+		
         }
+		
+
 
 
 

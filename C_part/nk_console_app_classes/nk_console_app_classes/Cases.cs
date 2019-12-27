@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task5_twin_classes_
+namespace nk_console_app_classes
 {
     class Cases
     {
         int case_id;
-        int person_id;
+		public int person_id;
         int article_id;
         public string start_date;
         public string end_date;
