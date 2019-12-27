@@ -1,23 +1,9 @@
 ﻿<Properties StartupConfiguration="{7E137999-4C71-4864-B9E4-E8CA3EAAFF8F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="nk_console_app/DAL.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="nk_console_app/Program.cs">
     <Files>
-      <File FileName="nk_console_app/Program.cs" Line="34" Column="65" />
-      <File FileName="nk_console_app/DAL.cs" Line="46" Column="25" NotebookId="1" />
+      <File FileName="nk_console_app/Program.cs" Line="18" Column="7" />
+      <File FileName="nk_console_app/DAL.cs" Line="67" Column="31" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="nk_console_app" expanded="True">
-            <Node name="nk_console_app" expanded="True">
-              <Node name="DAL.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.nk__console__app PreferredExecutionTarget="MonoDevelop.Default" />

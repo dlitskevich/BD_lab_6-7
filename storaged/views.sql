@@ -3,6 +3,8 @@ SELECT cases.* FROM cases
 INNER JOIN rehabilitation ON rehabilitation.case_id = cases.case_id
 WITH CASCADED CHECK OPTION;
 
+select * from rehabilitated_cases;
+
 CREATE VIEW criminal_code AS
 SELECT * FROM article;
 

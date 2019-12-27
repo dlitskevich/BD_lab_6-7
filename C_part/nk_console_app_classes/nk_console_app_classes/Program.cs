@@ -16,8 +16,8 @@ namespace nk_console_app_classes {
                 Console.WriteLine("My DAL app");
 
                 DAL myAccesLayer = new DAL();
-                myAccesLayer.OpenConnection("server=127.0.0.1; uid=root; password=Password; database=alliDB ");
-                // myAccesLayer.OpenConnectionConsole();
+                // myAccesLayer.OpenConnection("server=127.0.0.1; uid=root; password=Password; database=alliDB ");
+                myAccesLayer.OpenConnectionConsole();
 
 
                 List<Cases> caseList = myAccesLayer.getCasesAsList();

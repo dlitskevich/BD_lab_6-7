@@ -42,6 +42,7 @@ namespace nk_console_app {
 					" cast(aes_decrypt(person_name, 'name')as char)," +
 					" cast(aes_decrypt(person_surname, 'surname')as char)"
 					);
+				
 					*/
 				myAccesLayer.Display(
 					"person  where person_id=16",

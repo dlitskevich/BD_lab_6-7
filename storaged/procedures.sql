@@ -151,6 +151,7 @@ BEGIN
     FROM person) AS decrypted
     WHERE decrypted.person_name LIKE name_pattern AND decrypted.person_surname LIKE surname_pattern;
 END;;
+call view_person_by_name(1);
 
 CREATE PROCEDURE view_compromat (IN curr_person INT)
 BEGIN

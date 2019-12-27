@@ -51,6 +51,12 @@ select * from spyorg;
 select * from person_spyorg;
 select * from spy_ep_info;
 
+/*
+select article_id, sentence_text, count(sentence_text) as quant from cases natural join sentence
+group by article_id, sentence_text
+order by  sentence_text desc, quant desc
+;
+*/
 
 
 
